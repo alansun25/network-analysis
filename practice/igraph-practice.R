@@ -6,6 +6,8 @@ library(igraph)
 # data sets and code blocks for the textbook
 install.packages("sand")
 library(sand)
+install.packages('igraphdata')
+library(igraphdata)
 
 ## Chapter 2 - Manipulating Network Data
 
@@ -92,3 +94,47 @@ plot(lazega, layout=layout_with_kk,
      vertex.shape=laz.shape, 
      vertex.size=laz.size, 
      vertex.label=laz.label)
+
+## Chapter 4
+
+data(karate)
+
+### Degree distribution
+hist(degree(karate), col='lavender', 
+     main='Degree distribution in Zachary\'s karate club network', 
+     xlab='Vertex degree', xlim=c(0,20))
+
+### Weighted degree (strength) distribution
+### the sum of the weights of edges incident to a given vertex
+hist(strength(karate), col='skyblue',
+     main='Strength distribution in Zachary\'s karate lcub network',
+     xlab='Vertex strength')
+
+### Average neighbor degree vs vertex degree
+data(yeast)
+plot(degree(yeast), knn(yeast, V(yeast))$knn,
+     log='xy', col='turquoise', pch=16,
+     xlab='Log vertex degree', ylab='Log average neighbor degree')
+
+### network cohesion
+cliques(karate)
+max_cliques(karate)
+
+dyad_census(simplify(aidsblog))
+triad_census(simplify(aidsblog))
+
+edge_density(karate)
+edge_density(induced_subgraph(karate, vids=neighborhood(karate, 1, 1)[[1]]))
+edge_density(induced_subgraph(karate, vids=neighborhood(karate, 1, 34)[[1]]))
+
+# clustering
+transitivity(karate)
+transitivity(yeast)
+transitivity(aidsblog)
+
+reciprocity(aidsblog, mode='default') # directed edges approach
+reciprocity(aidsblog, mode='ratio') # dyads approach
+
+giant <- decompose(yeast)[[1]]
+vertex_connectivity(giant)
+articulation_points(giant)
