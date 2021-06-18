@@ -7,7 +7,7 @@ library(igraph)
 install.packages("sand")
 library(sand)
 
-## Chapter 2
+## Chapter 2 - Manipulating Network Data
 
 ### undirected
 g <- graph_from_literal(1-2, 1-3, 2-3, 2-4, 3-5, 4-5, 4-6, 4-7, 5-6, 6-7)
@@ -53,7 +53,42 @@ g.ring <- make_ring(25)
 g.tree <- make_tree(25, mode='undirected')
 g.star <- make_star(25, mode='in')
 
-plot(g.complete)s
+plot(g.complete)
 plot(g.ring)
 plot(g.tree)
 plot(g.star)
+
+## Chapter 3 - Visualizing Network Data
+
+l <- make_lattice(c(5,5,5))
+data(aidsblog)
+
+igraph_options(vertex.size=3, vertex.label=NA, edge.arrow.size=0.5)
+
+plot(l, layout=layout_in_circle)
+
+plot(aidsblog, 
+     layout=layout_in_circle(aidsblog, order=order(degree(aidsblog, mode='out'))),)
+title('AIDS Blog Network')
+
+### Fruchterman and Reingold (spring-embedder)
+plot(l, layout=layout_with_fr)
+plot(aidsblog, layout=layout_with_fr)
+
+### Kamada and Kawai (energy-placement)
+plot(l, layout=layout_with_kk)
+plot(aidsblog, layout=layout_with_kk)
+
+### Decorating graphs
+data(lazega)
+set.seed(345)
+laz.colors <- c('red', 'green', 'blue')[V(lazega)$Office] # Office location - Vertex color
+laz.shape <- c('circle', 'square')[V(lazega)$Practice] # Lawyer practice - Vertex shape
+laz.size <- 3.5*sqrt(V(lazega)$Years) # Years with the company - Vertex size
+laz.label <- V(lazega)$Seniorty # Seniority - Vertex label
+igraph.options(vertex.label=laz.label, vertex.label.cex=0.5)
+plot(lazega, layout=layout_with_kk, 
+     vertex.color=laz.colors, 
+     vertex.shape=laz.shape, 
+     vertex.size=laz.size, 
+     vertex.label=laz.label)
