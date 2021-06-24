@@ -1,4 +1,5 @@
 library(igraph)
+library(rlang)
 
 # Rewiring a Lattice
 #
@@ -26,22 +27,41 @@ rewire_lattice <- function(n, k, p) {
   }
   
   g <- make_lattice(length = n, dim = 1, nei = k, circular = TRUE)
+  size <- gsize(g)
   
-  # Make the lattice
-  # for(i in 1:n) {
-  #   kn <- ego(g, k, i)
-  #   print(kn)
-  #   nl <- kn[[1]]
-  #   print(nl)
-  #   for(j in nl) {
-  #     if (!are_adjacent(g, i, j) && i != j) {
-  #       g <- add_edges(g, c(i,j))       
-  #     }
-  #   }
-  # }
+  # I think I may to do need this, but not too sure... was running into problems of using an edge set of a
+  # different graph
+  # Duplicate initial lattice so we only change the duplicate and can still access the original edges
+  # tg <- duplicate(g)
+  
+  for(i in 1:size) {
+    edges <- E(g)
+    
+    # Randomly choose one of the nodes incident on edge i to be the starting node
+    start <- ends(g, edges[i])[sample(1:2, 1)]
+
+    prob <- runif(1)
+    if (prob < p) {
+      g <- delete_edges(g, edges[i]) # Remove initial edge
+      rewire <- sample(1:n, 1) # Choose random node to rewire to
+      
+      # No self-loops or multiple edges
+      while (rewire == start || are_adjacent(g, rewire, start)) {
+        rewire <- sample(1:n, 1)
+      }
+      
+      g <- add_edges(g, c(start, rewire)) # Rewire the edge
+    }
+  }
   
   return(g)
 }
 
-tg <- rewire_lattice(15, 3, 0.1)
-plot(tg, layout=layout_in_circle(tg))
+rewired <- rewire_lattice(20, 2, 0.4)
+gsize(rewired)
+plot(rewired, layout=layout_in_circle(rewired))
+
+# tt <- make_lattice(length = 3, dim = 1, nei = 2, circular = TRUE)
+# E(tt)
+# tt <- delete_edges(tt, E(tt)[1])
+# E(tt)
