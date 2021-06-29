@@ -53,11 +53,8 @@ rewire_lattice <- function(n, k, p) {
           if (!are_adjacent(e, v1, v2)) {
             e <- add_edges(e, c(v1, v2)) 
           }
-        } 
-      }
-      
-      # Track which edges of the initial lattices have already been visited
-      if (!are_adjacent(edges_visited, v1, v2)) {
+        }
+        
         edges_visited <- add_edges(edges_visited, c(v1, v2)) 
       }
     }
@@ -69,6 +66,6 @@ rewire_lattice <- function(n, k, p) {
   return(e)
 }
 
-rewired <- rewire_lattice(10, 2, 0.5)
+rewired <- rewire_lattice(8, 2, 0.5)
 gsize(rewired)
 plot(rewired, layout=layout_in_circle(rewired))
