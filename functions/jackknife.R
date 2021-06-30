@@ -10,7 +10,7 @@ jackknife <- function(g, stat) {
   }
   
   if (stat != "density" && stat != "transitivity") {
-    stop("Provided statistic not currently supported")
+    stop("Provided statistic not currently supported.")
   }
   
   n <- vcount(g)
