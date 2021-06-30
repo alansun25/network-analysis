@@ -9,19 +9,28 @@ vboot <- function(g) {
 
   gboot <- make_empty_graph(0, FALSE)
   n <- vcount(g)
+  dens <- edge_density(g)
   
   gboot <- gboot + vertices(sample(V(g), n, replace=TRUE))
   
-  # If the edge exists in g, add it to gboot
+  # The probability of there being an edge between any two vertices is the edge density.
+  #
+  # If the two artificial vertices correspond to the same real vertex and the random number
+  # prob is less than the edge density of g, we add an edge between the two artifical vertices.
+  # - OR -
+  # If the two articial vertices correspond to different real vertices, add an edge betwen them
+  # if that same edge exists in g.
   for(i in 1:n) {
     for(j in 1:n) {
       v1 <- V(gboot)[i]
       v2 <- V(gboot)[j]
       
-      if (i!= j # No self-loops
-          && !are_adjacent(gboot, v1, v2) # No multiple edges
-          && are_adjacent(g, v1$name, v2$name)) {
-        gboot <- add_edges(gboot, c(v1, v2))
+      # No self-loops or multiple edges
+      if (i != j && !are_adjacent(gboot, v1, v2)) {
+        prob <- runif(1)
+        if ((v1$name == v2$name && prob < dens) || are_adjacent(g, v1$name, v2$name)) {
+          gboot <- add_edges(gboot, c(v1, v2))
+        }
       }
     }
   }
@@ -35,19 +44,6 @@ vboot <- function(g) {
         v_attr_name <- v_attr[j]
         v_attr_value <- vertex_attr(g, v_attr_name, v$name)
         gboot <- set_vertex_attr(gboot, v_attr_name, v, v_attr_value)
-      }
-    }
-  }
-  
-  # Transfer edge attributes from g to gboot
-  if (length(edge_attr(g)) != 0) {
-    e_attr <- edge_attr_names(g)
-    for(i in 1:length(E(gboot))) {
-      e <- E(gboot)[i]
-      for(j in 1:length(e_attr)) {
-        e_attr_name <- e_attr[j]
-        e_attr_value <- edge_attr(g, e_attr_name)[match(e, E(g))]
-        gboot <- set_edge_attr(gboot, e_attr_name, e, e_attr_value)
       }
     }
   }
@@ -82,5 +78,5 @@ E(vqwer)
 edge_attr(qwer)
 edge_attr(vqwer)
 
-
+g <- make_graph(c(1,2, 2,3, 2,4, 3,4), directed=FALSE)
 
