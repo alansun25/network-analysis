@@ -1,8 +1,6 @@
 library(igraph)
 
-# Rewiring a Lattice
-#
-# Creates and rewires a lattice given the following parameters:
+# Rewires a lattice given the following parameters:
 #   n (number of nodes in the initial lattice)
 #   k (distance of farthest neighbor each node will be connected to in the initial lattice)
 #   p (rewiring probability)
@@ -12,66 +10,62 @@ library(igraph)
 #
 # The point of interest here is to rewire the lattice to have low average path length (small world)
 # as well as high clustering.
+
 rewire_lattice <- function(n, k, p) {
-  l <- make_lattice(length = n, dim = 1, nei = k, circular = TRUE)
-  
-  if (k == n/2) {
-    return(l)
-  }
-  
-  if (n < 0) {
-    stop("Graph cannot have a negative number of nodes.")
+  # Can't rewire a complete graph because every node is linked to every other node already.
+  if (k >= n/2) {
+    return(make_lattice(length = n, dim = 1, nei = k, circular = TRUE))
   }
   
   if (k < 0) {
     stop("Neighbors cannot have negative distance.")
   }
   
-  if (k > n/2) {
-    stop("Neighborhood is not well defined.")
+  if (n < 0) {
+    stop("Graph cannot have a negative number of nodes.")
   }
   
   if (p < 0 || p > 1) {
     stop("Probability value must be between 0 and 1.")
   }
-
-  e <- make_empty_graph(n, directed = FALSE)
-
-  edges_visited <- make_empty_graph(n, directed=FALSE)
   
+  e <- make_empty_graph(n, FALSE)
+  
+  # Chose to do it like this because it is more space efficient than iterating by edge 
+  # and having two extra graphs
   for(i in 1:n) {
-    n_edges <- incident(l, i)
-    for(j in 1:length(n_edges)) {
+    for(j in (i + 1):(i + k)) {
+      j <- (j - 1) %% n + 1 # Wrap around if j > n
+      
       prob <- runif(1)
       
-      v1 <- ends(l, n_edges[j])[1]
-      v2 <- ends(l, n_edges[j])[2]
-      
-      start <- c(v1, v2)[sample(1:2, 1)]
-      
-      # Only rewire if probability p is exceeded and if edge j has not already been visited.
-      if (!are_adjacent(edges_visited, v1, v2)) {
-        if (prob < p) {
-          rewire <- sample(1:n, 1) # Choose random node to rewire to
-          
-          # No self-loops
-          while (rewire == start || are_adjacent(e, rewire, start)) {
-            print(edge_density(e))
-            rewire <- sample(1:n, 1)
+      if (prob < p) {
+        start <- c(i, j)[sample(1:2, 1)] # Randomly select node to start as head
+        adj_start <- neighbors(e, start) # Get all nodes that already form edges with start
+        
+        if (length(adj_start) > 0) {
+          rewire <- sample(V(e)[-adj_start], 1)
+          while (rewire == start) {
+            rewire <- sample(V(e)[-adj_start], 1)
           }
-          
-          e <- add_edges(e, c(start, rewire))
         } else {
-          if (!are_adjacent(e, v1, v2)) {
-            e <- add_edges(e, c(v1, v2)) 
+          rewire <- sample(V(e)[-c(i,j)], 1)
+          while (rewire == start) {
+            rewire <- sample(V(e)[-c(i,j)], 1)
           }
         }
         
-        edges_visited <- add_edges(edges_visited, c(v1, v2)) 
+        e <- add_edges(e, c(start, rewire))
+      } else {
+        # WIP: This doesn't let every edge get added into graph e, but if I remove the if statement it 
+        # allows for multiple edges.
+        if (!are_adjacent(e, i, j)) {
+          e <- add_edges(e, c(i, j))
+        }
       }
     }
   }
-
+  
   return(e)
 }
 
