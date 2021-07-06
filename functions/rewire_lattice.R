@@ -13,7 +13,7 @@ library(igraph)
 
 rewire_lattice <- function(n, k, p) {
   # Can't rewire a complete graph because every node is linked to every other node already.
-  if (k >= n/2) {
+  if ((n %% 2 == 0 && k >= n/2) || (n %% 2 == 1 && k >= n/2 - 1)) {
     return(make_lattice(length = n, dim = 1, nei = k, circular = TRUE))
   }
   
@@ -30,45 +30,55 @@ rewire_lattice <- function(n, k, p) {
   }
   
   e <- make_empty_graph(n, FALSE)
+  # l <- layout_in_circle(e)
+  # plot(e, layout=l)
+  # Sys.sleep(2.5)
   
-  # Chose to do it like this because it is more space efficient than iterating by edge 
-  # and having two extra graphs
   for(i in 1:n) {
     for(j in (i + 1):(i + k)) {
-      j <- (j - 1) %% n + 1 # Wrap around if j > n
+      j <- (j - 1) %% n + 1 # Wrap around if j > n.
       
       prob <- runif(1)
       
-      if (prob < p) {
-        start <- c(i, j)[sample(1:2, 1)] # Randomly select node to start as head
-        adj_start <- neighbors(e, start) # Get all nodes that already form edges with start
-        
-        if (length(adj_start) > 0) {
-          rewire <- sample(V(e)[-adj_start], 1)
-          while (rewire == start) {
-            rewire <- sample(V(e)[-adj_start], 1)
-          }
+      if (prob < p || are_adjacent(e, i, j)) {
+        # If either node has degree n - 1, make the other one the starting node by default.
+        # Otherwise, randomly select one to start as the head.
+        if (degree(e, i) == n - 1) {
+          start <- j
+        } else if (degree(e, j) == n - 1) {
+          start <- i
         } else {
-          rewire <- sample(V(e)[-c(i,j)], 1)
-          while (rewire == start) {
+          start <- c(i, j)[sample(1:2, 1)] 
+        }
+        
+        if (degree(e, i) == n - 1 && degree(e, j) == n - 1) {
+          # If both nodes have degree n - 1, a loop or multiple edge is inevitable.
+          rewire <- sample(V(e), 1)
+        } else {
+          adj_start <- neighbors(e, start) # Get all nodes that already form edges with start.
+          if (length(adj_start) > 0) {
+            rewire <- sample(V(e)[-adj_start], 1)
+            while (rewire == start) {
+              rewire <- sample(V(e)[-adj_start], 1)
+            }
+          } else {
             rewire <- sample(V(e)[-c(i,j)], 1)
           }
         }
         
         e <- add_edges(e, c(start, rewire))
       } else {
-        # WIP: This doesn't let every edge get added into graph e, but if I remove the if statement it 
-        # allows for multiple edges.
-        if (!are_adjacent(e, i, j)) {
-          e <- add_edges(e, c(i, j))
-        }
+        e <- add_edges(e, c(i, j))
       }
+      
+      # plot(e, layout=l)
+      # Sys.sleep(2.5)
     }
   }
   
   return(e)
 }
 
-rewired <- rewire_lattice(10, 4, 1)
+rewired <- rewire_lattice(20, 6, 0.5)
 gsize(rewired)
 plot(rewired, layout=layout_in_circle(rewired))

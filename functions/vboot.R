@@ -13,13 +13,6 @@ vboot <- function(g) {
   
   gboot <- gboot + vertices(sample(V(g), n, replace=TRUE))
   
-  # The probability of there being an edge between any two vertices is the edge density.
-  #
-  # If the two artificial vertices correspond to the same real vertex and the random number
-  # prob is less than the edge density of g, we add an edge between the two artifical vertices.
-  # - OR -
-  # If the two articial vertices correspond to different real vertices, add an edge betwen them
-  # if that same edge exists in g.
   for(i in 1:n) {
     for(j in 1:n) {
       v1 <- V(gboot)[i]
@@ -28,6 +21,14 @@ vboot <- function(g) {
       # No self-loops or multiple edges
       if (i != j && !are_adjacent(gboot, v1, v2)) {
         prob <- runif(1)
+        
+        # The probability of there being an edge between any two vertices is the edge density.
+        #
+        # If the two artificial vertices correspond to the same real vertex and the random number
+        # prob is less than the edge density of g, we add an edge between the two artifical vertices.
+        # - OR -
+        # If the two articial vertices correspond to different real vertices, add an edge betwen them
+        # if that same edge exists in g.
         if ((v1$name == v2$name && prob < dens) || are_adjacent(g, v1$name, v2$name)) {
           gboot <- add_edges(gboot, c(v1, v2))
         }
