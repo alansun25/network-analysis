@@ -213,3 +213,69 @@ summary(rds4) # Min: 0.2727, Q1: 0.3480, Med: 0.3621, Mean: 0.3627, Q3: 0.3809, 
 
 # Is the change in transitivity between different points in time (from g1 to g2
 # to g3 to g4) significant?
+
+# Bootstrapped distributions of transitivity for each friendship network
+set.seed(346)
+bootdist1 <- c()
+bootdist2 <- c()
+bootdist3 <- c()
+bootdist4 <- c()
+
+# Slow
+for(i in 1:1000) {
+  bootdist1 <- append(bootdist1, transitivity(vboot(g1)))
+  bootdist2 <- append(bootdist2, transitivity(vboot(g2)))
+  bootdist3 <- append(bootdist3, transitivity(vboot(g3)))
+  bootdist4 <- append(bootdist4, transitivity(vboot(g4)))
+}
+
+hist(bootdist1, main = "Bootstrapped distribution of transitivity from f1",
+    xlab = "Transitivity", col = "turquoise")
+sd(bootdist1) # 0.08959786
+
+hist(bootdist2, main = "Bootstrapped distribution of transitivity from f2",
+     xlab = "Transitivity", col = "lightblue")
+sd(bootdist2) # 0.07825657
+
+hist(bootdist3, main = "Bootstrapped distribution of transitivity from f3",
+     xlab = "Transitivity", col = "lavender")
+sd(bootdist3) # 0.06630461
+
+hist(bootdist4, main = "Bootstrapped distribution of transitivity from f4",
+     xlab = "Transitivity", col = "gold")
+sd(bootdist4) # 0.07371835
+
+## Paired t-tests to test for significance between transitivity at different points in time
+t.test(bootdist1, bootdist2, paired = TRUE, alternative = "two.sided") # p < 2.2e-16 (significant)
+t.test(bootdist2, bootdist3, paired = TRUE, alternative = "two.sided") # p = 0.3191 (not significant)
+t.test(bootdist3, bootdist4, paired = TRUE, alternative = "two.sided") # p < 2.2e-16 (significant)
+
+# Distributions of transitivity obtained by using the jackknife procedure
+set.seed(346)
+
+jackdist1 <- jackknife(g1, "transitivity")
+jackdist2 <- jackknife(g2, "transitivity")
+jackdist3 <- jackknife(g3, "transitivity")
+jackdist4 <- jackknife(g4, "transitivity")
+
+hist(jackdist1, main = "Jackknife distribution of transitivity from f1",
+     xlab = "Transitivity", col = "turquoise")
+sd(jackdist1) # 0.01565041
+
+hist(jackdist2, main = "Jackknife distribution of transitivity from f2",
+     xlab = "Transitivity", col = "lightblue")
+sd(jackdist2) # 0.01975708
+
+hist(jackdist3, main = "Jackknife distribution of transitivity from f3",
+     xlab = "Transitivity", col = "lavender")
+sd(jackdist3) # 0.01259701
+
+transitivity(g4, type = "global")
+hist(jackdist4, main = "Jackknife distribution of transitivity from f4",
+     xlab = "Transitivity", col = "lavender")
+sd(jackdist4) # 0.01379902
+
+# The distributions don't really look normal, so paired t-tests might not be appropriate
+t.test(jackdist1, jackdist2, paired = TRUE, alternative = "two.sided") # p = 2.367e-12 (significant)
+t.test(jackdist2, jackdist3, paired = TRUE, alternative = "two.sided") # p = 0.1615 (not significant)
+t.test(jackdist3, jackdist4, paired = TRUE, alternative = "two.sided") # p < 2.2e-16 (significant)
