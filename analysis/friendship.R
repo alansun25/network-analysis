@@ -50,6 +50,27 @@ hist(er1, main = "Distribution of Transitivity (Erdos-Renyi, f1)",
 summary(er1) # Min: 0.03409, Q1: 0.16116, Med: 0.18853, Mean: 0.18855, Q3: 0.21602, Max: 0.32308
 
 ### Small World
+steps <- seq(-4, -0.5, 0.1)
+len <- length(steps)
+tr <- numeric(len)
+md <- numeric(len)
+for(i in 1:len) {
+  trtemp <- numeric(1000)
+  mdtepmp <- numeric(1000)
+  for(j in 1:1000) {
+    g <- rewire_lattice(gorder(g1), 2, 10^steps[i])
+    trtemp[j] <- transitivity(g)
+    mdtemp[j] <- mean_distance(g)
+  }
+  tr[i] <- mean(trtemp)
+  md[i] <- mean(mdtemp)
+}
+
+plot(steps, tr/max(tr), lwd=3, type="l", 
+     col="blue", xlab=expression(log[10](p)),
+     ylab="Transitivity and Mean Distance")
+lines(steps, md/max(md), lwd=3, col="red")
+
 set.seed(346)
 sw1 <- c()
 for(i in 1:1000) {
@@ -66,7 +87,7 @@ set.seed(346)
 g1_degs <- degree(g1)
 rds1 <- c()
 for(i in 1:1000) {
-  r <- sample_degseq(g1_degs, method="vl")
+  r <- sample_degseq(g1_degs, method="simple.no.multiple")
   rt <- transitivity(r, type = "global")
   rds1 <- append(rds1, rt)
 }
@@ -109,7 +130,7 @@ set.seed(346)
 rds2 <- c()
 g2_degs <- degree(g2)
 for(i in 1:1000) {
-  r <- sample_degseq(g2_degs, method="vl")
+  r <- sample_degseq(g2_degs, method="simple.no.multiple")
   rt <- transitivity(r, type = "global")
   rds2 <- append(rds2, rt)
 }
@@ -244,6 +265,8 @@ sd(bootdist3) # 0.06630461
 hist(bootdist4, main = "Bootstrapped distribution of transitivity from f4",
      xlab = "Transitivity", col = "gold")
 sd(bootdist4) # 0.07371835
+
+
 
 ## Paired t-tests to test for significance between transitivity at different points in time
 t.test(bootdist1, bootdist2, paired = TRUE, alternative = "two.sided") # p < 2.2e-16 (significant)
