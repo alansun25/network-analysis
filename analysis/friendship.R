@@ -66,6 +66,7 @@ for(i in 1:len) {
   md[i] <- mean(mdtemp)
 }
 
+# Divde by max to scale tr and md similarly
 plot(steps, tr/max(tr), lwd=3, type="l", 
      col="blue", xlab=expression(log[10](p)),
      ylab="Transitivity and Mean Distance")
