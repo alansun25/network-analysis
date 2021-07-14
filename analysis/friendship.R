@@ -5,6 +5,7 @@ source("../../functions/random_graph.R")
 source("../../functions/rewire_lattice.R")
 source("../../functions/vboot.R")
 source("../../functions/jackknife.R")
+source("../../functions/numcores.R")
 
 library(igraph)
 
@@ -56,7 +57,7 @@ tr <- numeric(len)
 md <- numeric(len)
 for(i in 1:len) {
   trtemp <- numeric(1000)
-  mdtepmp <- numeric(1000)
+  mdtemp <- numeric(1000)
   for(j in 1:1000) {
     g <- rewire_lattice(gorder(g1), 2, 10^steps[i])
     trtemp[j] <- transitivity(g)
@@ -72,16 +73,39 @@ plot(steps, tr/max(tr), lwd=3, type="l",
      ylab="Transitivity and Mean Distance")
 lines(steps, md/max(md), lwd=3, col="red")
 
+# tr2 <- numeric(len)
+# md2 <- numeric(len)
+# for(i in 1:len) {
+#   trtemp2 <- numeric(1000)
+#   mdtemp2 <- numeric(1000)
+#   for(j in 1:1000) {
+#     g <- sample_smallworld(1, gorder(g1), 2, 10^steps[i])
+#     trtemp2[j] <- transitivity(g)
+#     mdtemp2[j] <- mean_distance(g)
+#   }
+#   tr2[i] <- mean(trtemp2)
+#   md2[i] <- mean(mdtemp2)
+# }
+# 
+# plot(steps, tr2/max(tr2), lwd=3, type="l", 
+#      col="blue", xlab=expression(log[10](p)),
+#      ylab="Transitivity and Mean Distance")
+# lines(steps, md2/max(md2), lwd=3, col="red")
+
 set.seed(346)
 sw1 <- c()
+sw1_deg <- list()
 for(i in 1:1000) {
   r <- rewire_lattice(gorder(g1), 2, 0.05)
   rt <- transitivity(r, type = "global")
   sw1 <- append(sw1, rt)
+  sw1_deg[[i]] <- degree(r)
 }
 hist(sw1, main = "Distribution of Transitivity (Small World, f1)",
      xlab = "Transitivity Value", col = "lightblue")
 summary(sw1) # Min: 0.2981, Q1: 0.4125, Med: 0.4367, Mean: 0.4349, Q3: 0.4586, Max: 0.5159
+hist(sw1_deg[[3]])
+hist(degree(g1))
 
 ### Required Degree Sequence
 set.seed(346)
@@ -243,36 +267,51 @@ bootdist2 <- c()
 bootdist3 <- c()
 bootdist4 <- c()
 
+v <- vertices(sample(V(g1), gorder(g1), replace=TRUE))
+
 # Slow
 for(i in 1:1000) {
-  bootdist1 <- append(bootdist1, transitivity(vboot(g1)))
-  bootdist2 <- append(bootdist2, transitivity(vboot(g2)))
-  bootdist3 <- append(bootdist3, transitivity(vboot(g3)))
-  bootdist4 <- append(bootdist4, transitivity(vboot(g4)))
+  bootdist1 <- append(bootdist1, transitivity(vboot(g1, v)))
+  bootdist2 <- append(bootdist2, transitivity(vboot(g2, v)))
+  bootdist3 <- append(bootdist3, transitivity(vboot(g3, v)))
+  bootdist4 <- append(bootdist4, transitivity(vboot(g4, v)))
 }
 
 hist(bootdist1, main = "Bootstrapped distribution of transitivity from f1",
     xlab = "Transitivity", col = "turquoise")
-sd(bootdist1) # 0.08959786
+sd(bootdist1) # 0.03789465
 
 hist(bootdist2, main = "Bootstrapped distribution of transitivity from f2",
      xlab = "Transitivity", col = "lightblue")
-sd(bootdist2) # 0.07825657
+sd(bootdist2) # 0.02383357
 
 hist(bootdist3, main = "Bootstrapped distribution of transitivity from f3",
      xlab = "Transitivity", col = "lavender")
-sd(bootdist3) # 0.06630461
+sd(bootdist3) # 0.01716918
 
 hist(bootdist4, main = "Bootstrapped distribution of transitivity from f4",
      xlab = "Transitivity", col = "gold")
-sd(bootdist4) # 0.07371835
+sd(bootdist4) # 0.02482708
 
+## Bootstrap distributions of differences between transitivity in f1 and f2
+d_b1_b2 <- bootdist2 - bootdist1
+hist(d_b1_b2, main = "Bootstrapped distribution of the difference in transitivity values between friendship networks 1 and 2",
+     xlab = "Transitivity at time 2 - Transitivity at time 1", cex.main = 0.9)
+quantile(d_b1_b2, c(0.025, 0.975)) # [-0.009775407, 0.163111070] <- contains 0; not significantly different
 
+## Bootstrap distribution of differences between transitivity in f2 and f3
+d_b2_b3 <- bootdist3 - bootdist2
+hist(d_b2_b3, main = "Bootstrapped distribution of the difference in transitivity values between friendship networks 2 and 3",
+     xlab = "Transitivity at time 3 - Transitivity at time 2", cex.main = 0.9)
+quantile(d_b2_b3, c(0.025, 0.975)) # [0.01122056, 0.12545244] <- doesn't contain 0; 
+                                   # time 3 transitivity is significantly greater than time 2 transitivity
 
-## Paired t-tests to test for significance between transitivity at different points in time
-t.test(bootdist1, bootdist2, paired = TRUE, alternative = "two.sided") # p < 2.2e-16 (significant)
-t.test(bootdist2, bootdist3, paired = TRUE, alternative = "two.sided") # p = 0.3191 (not significant)
-t.test(bootdist3, bootdist4, paired = TRUE, alternative = "two.sided") # p < 2.2e-16 (significant)
+## Bootstrap distribution of differences between transitivity in f3 and f4
+d_b3_b4 <- bootdist4 - bootdist3
+hist(d_b3_b4, main = "Bootstrapped distribution of the difference in transitivity values between friendship networks 3 and 4",
+     xlab = "Transitivity at time 4 - Transitivity at time 3", cex.main = 0.9)
+quantile(d_b3_b4, c(0.025, 0.975)) # [-0.19592724, -0.08205825] <- doesn't contain 0; 
+                                   # time 4 transitivity is significantly less than time 3 transitivity
 
 # Distributions of transitivity obtained by using the jackknife procedure
 set.seed(346)
@@ -294,12 +333,128 @@ hist(jackdist3, main = "Jackknife distribution of transitivity from f3",
      xlab = "Transitivity", col = "lavender")
 sd(jackdist3) # 0.01259701
 
-transitivity(g4, type = "global")
 hist(jackdist4, main = "Jackknife distribution of transitivity from f4",
      xlab = "Transitivity", col = "lavender")
 sd(jackdist4) # 0.01379902
 
-# The distributions don't really look normal, so paired t-tests might not be appropriate
-t.test(jackdist1, jackdist2, paired = TRUE, alternative = "two.sided") # p = 2.367e-12 (significant)
-t.test(jackdist2, jackdist3, paired = TRUE, alternative = "two.sided") # p = 0.1615 (not significant)
-t.test(jackdist3, jackdist4, paired = TRUE, alternative = "two.sided") # p < 2.2e-16 (significant)
+## Jackknife distributions of differences between transitivity in f1 and f2
+d_j1_j2 <- jackdist2 - jackdist1
+hist(d_j1_j2, main = "Jackknife distribution of the difference in transitivity values between friendship networks 1 and 2",
+     xlab = "Transitivity at time 2 - Transitivity at time 1", cex.main = 0.9)
+quantile(d_j1_j2, c(0.025, 0.975)) # [0.008527503, 0.084110262] <- doesn't contain 0; 
+                                   # time 2 transitivity is significantly greater than time 1 transitivity
+
+## Jackknife distribution of differences between transitivity in f2 and f3
+d_j2_j3 <- jackdist3 - jackdist2
+hist(d_j2_j3, main = "Jackknife distribution of the difference in transitivity values between friendship networks 2 and 3",
+     xlab = "Transitivity at time 3 - Transitivity at time 2", cex.main = 0.9)
+quantile(d_j2_j3, c(0.025, 0.975)) # [-0.03612817, 0.03887031 ] <- contains 0; not significant
+
+## Jackknife distribution of differences between transitivity in f3 and f4
+d_j3_j4 <- jackdist4 - jackdist3
+hist(d_j3_j4, main = "Jackknife distribution of the difference in transitivity values between friendship networks 3 and 4",
+     xlab = "Transitivity at time 4 - Transitivity at time 3", cex.main = 0.9)
+quantile(d_j3_j4, c(0.025, 0.975)) # [-0.12757702, -0.08184937 ] <- doesn't contain 0; 
+                                   # time 4 transitivity is significantly less than time 3 transitivity
+
+# ============================================================================
+
+# Is the change in number of 2-cores between different points in time (from g1 to g2
+# to g3 to g4) significant?
+
+# Bootstrapped distributions of number of 2-cores for each friendship network
+set.seed(346)
+cbootdist1 <- c()
+cbootdist2 <- c()
+cbootdist3 <- c()
+cbootdist4 <- c()
+
+cv <- vertices(sample(V(g1), gorder(g1), replace=TRUE))
+
+# Slow
+# for(i in 1:1000) {
+#   cbootdist1 <- append(cbootdist1, numcores(vboot(g1, v), 2))
+#   cbootdist2 <- append(cbootdist2, numcores(vboot(g2, v), 2))
+#   cbootdist3 <- append(cbootdist3, numcores(vboot(g3, v), 2))
+#   cbootdist4 <- append(cbootdist4, numcores(vboot(g4, v), 2))
+# }
+# 
+# hist(cbootdist1, main = "Bootstrapped distribution of number of 2-cores from f1",
+#      xlab = "Number of 2-cores", col = "turquoise")
+# sd(cbootdist1) # 0.03789465
+# 
+# hist(cbootdist2, main = "Bootstrapped distribution of number of 2-cores transitivity from f2",
+#      xlab = "Number of 2-cores", col = "lightblue")
+# sd(cbootdist2) # 0.02383357
+# 
+# hist(cbootdist3, main = "Bootstrapped distribution of number of 2-cores transitivity from f3",
+#      xlab = "Number of 2-cores", col = "lavender")
+# sd(cbootdist3) # 0.01716918
+# 
+# hist(cbootdist4, main = "Bootstrapped distribution of number of 2-cores transitivity from f4",
+#      xlab = "Number of 2-cores", col = "gold")
+# sd(cbootdist4) # 0.02482708
+# 
+# ## Bootstrap distributions of differences between transitivity in f1 and f2
+# d_b1_b2 <- bootdist2 - bootdist1
+# hist(d_b1_b2, main = "Bootstrapped distribution of the difference in transitivity values between friendship networks 1 and 2",
+#      xlab = "Transitivity at time 2 - Transitivity at time 1", cex.main = 0.9)
+# quantile(d_b1_b2, c(0.025, 0.975)) # [-0.009775407, 0.163111070] <- contains 0; not significantly different
+# 
+# ## Bootstrap distribution of differences between transitivity in f2 and f3
+# d_b2_b3 <- bootdist3 - bootdist2
+# hist(d_b2_b3, main = "Bootstrapped distribution of the difference in transitivity values between friendship networks 2 and 3",
+#      xlab = "Transitivity at time 3 - Transitivity at time 2", cex.main = 0.9)
+# quantile(d_b2_b3, c(0.025, 0.975)) # [0.01122056, 0.12545244] <- doesn't contain 0; 
+# # time 3 transitivity is significantly greater than time 2 transitivity
+# 
+# ## Bootstrap distribution of differences between transitivity in f3 and f4
+# d_b3_b4 <- bootdist4 - bootdist3
+# hist(d_b3_b4, main = "Bootstrapped distribution of the difference in transitivity values between friendship networks 3 and 4",
+#      xlab = "Transitivity at time 4 - Transitivity at time 3", cex.main = 0.9)
+# quantile(d_b3_b4, c(0.025, 0.975)) # [-0.19592724, -0.08205825] <- doesn't contain 0; 
+# # time 4 transitivity is significantly less than time 3 transitivity
+# 
+# # Distributions of transitivity obtained by using the jackknife procedure
+# set.seed(346)
+# 
+# jackdist1 <- jackknife(g1, "transitivity")
+# jackdist2 <- jackknife(g2, "transitivity")
+# jackdist3 <- jackknife(g3, "transitivity")
+# jackdist4 <- jackknife(g4, "transitivity")
+# 
+# hist(jackdist1, main = "Jackknife distribution of transitivity from f1",
+#      xlab = "Transitivity", col = "turquoise")
+# sd(jackdist1) # 0.01565041
+# 
+# hist(jackdist2, main = "Jackknife distribution of transitivity from f2",
+#      xlab = "Transitivity", col = "lightblue")
+# sd(jackdist2) # 0.01975708
+# 
+# hist(jackdist3, main = "Jackknife distribution of transitivity from f3",
+#      xlab = "Transitivity", col = "lavender")
+# sd(jackdist3) # 0.01259701
+# 
+# hist(jackdist4, main = "Jackknife distribution of transitivity from f4",
+#      xlab = "Transitivity", col = "lavender")
+# sd(jackdist4) # 0.01379902
+# 
+# ## Jackknife distributions of differences between transitivity in f1 and f2
+# d_j1_j2 <- jackdist2 - jackdist1
+# hist(d_j1_j2, main = "Jackknife distribution of the difference in transitivity values between friendship networks 1 and 2",
+#      xlab = "Transitivity at time 2 - Transitivity at time 1", cex.main = 0.9)
+# quantile(d_j1_j2, c(0.025, 0.975)) # [0.008527503, 0.084110262] <- doesn't contain 0; 
+# # time 2 transitivity is significantly greater than time 1 transitivity
+# 
+# ## Jackknife distribution of differences between transitivity in f2 and f3
+# d_j2_j3 <- jackdist3 - jackdist2
+# hist(d_j2_j3, main = "Jackknife distribution of the difference in transitivity values between friendship networks 2 and 3",
+#      xlab = "Transitivity at time 3 - Transitivity at time 2", cex.main = 0.9)
+# quantile(d_j2_j3, c(0.025, 0.975)) # [-0.03612817, 0.03887031 ] <- contains 0; not significant
+# 
+# ## Jackknife distribution of differences between transitivity in f3 and f4
+# d_j3_j4 <- jackdist4 - jackdist3
+# hist(d_j3_j4, main = "Jackknife distribution of the difference in transitivity values between friendship networks 3 and 4",
+#      xlab = "Transitivity at time 4 - Transitivity at time 3", cex.main = 0.9)
+# quantile(d_j3_j4, c(0.025, 0.975)) # [-0.12757702, -0.08184937 ] <- doesn't contain 0; 
+# # time 4 transitivity is significantly less than time 3 transitivity

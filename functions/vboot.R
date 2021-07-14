@@ -2,7 +2,7 @@ library(igraph)
 
 # Vertex Bootstrapping
 
-vboot <- function(g) {
+vboot <- function(g, v) {
   if (!is_igraph(g)) {
     stop("Object must be an igraph graph.")
   }
@@ -11,7 +11,7 @@ vboot <- function(g) {
   n <- vcount(g)
   dens <- edge_density(g)
   
-  gboot <- gboot + vertices(sample(V(g), n, replace=TRUE))
+  gboot <- gboot + v
   
   for(i in 1:n) {
     for(j in 1:n) {
@@ -55,7 +55,7 @@ vboot <- function(g) {
 # Tests
 t <- make_lattice(length=10, dim=1, nei=2, circular = TRUE)
 length(vertex_attr(t))
-vt <- vboot(t)
+vt <- vboot(t, vertices(sample(V(t), gorder(t), replace=TRUE)))
 
 length(E(t))
 length(E(vt))
@@ -66,18 +66,7 @@ plot(vt, layout=layout_nicely(vt))
 asdf <- make_ring(10) %>% 
   set_vertex_attr("label", value = LETTERS[1:10]) %>%
   set_vertex_attr("color", index=1, value="blue")
-vasdf <- vboot(asdf)
+vasdf <- vboot(asdf, vertices(sample(V(asdf), gorder(asdf), replace=TRUE)))
 vertex_attr(vasdf)
 vertex_attr(asdf)
-
-qwer <- make_ring(10) %>%
-  set_edge_attr("label", value = LETTERS[1:10])
-vqwer <- vboot(qwer)
-plot(qwer)
-plot(vqwer)
-E(vqwer)
-edge_attr(qwer)
-edge_attr(vqwer)
-
-g <- make_graph(c(1,2, 2,3, 2,4, 3,4), directed=FALSE)
 
