@@ -70,7 +70,8 @@ for(i in 1:len) {
 # Divde by max to scale tr and md similarly
 plot(steps, tr/max(tr), lwd=3, type="l", 
      col="blue", xlab=expression(log[10](p)),
-     ylab="Transitivity and Mean Distance")
+     ylab="Transitivity and Mean Distance",
+     ylim=c(0,1))
 lines(steps, md/max(md), lwd=3, col="red")
 
 # tr2 <- numeric(len)
