@@ -56,10 +56,10 @@ len <- length(steps)
 tr <- numeric(len)
 md <- numeric(len)
 for(i in 1:len) {
-  trtemp <- numeric(1000)
-  mdtemp <- numeric(1000)
-  for(j in 1:1000) {
-    g <- rewire_lattice(gorder(g1), 2, 10^steps[i])
+  trtemp <- numeric(100)
+  mdtemp <- numeric(100)
+  for(j in 1:100) {
+    g <- rewire_lattice(gorder(g1)*15, 2, 10^steps[i])
     trtemp[j] <- transitivity(g)
     mdtemp[j] <- mean_distance(g)
   }
@@ -78,8 +78,8 @@ lines(steps, md/max(md), lwd=3, col="red")
 # for(i in 1:len) {
 #   trtemp2 <- numeric(1000)
 #   mdtemp2 <- numeric(1000)
-#   for(j in 1:1000) {
-#     g <- sample_smallworld(1, gorder(g1), 2, 10^steps[i])
+#   for(j in 1:100) {
+#     g <- sample_smallworld(1, gorder(g1)*15, 2, 10^steps[i])
 #     trtemp2[j] <- transitivity(g)
 #     mdtemp2[j] <- mean_distance(g)
 #   }
@@ -87,7 +87,7 @@ lines(steps, md/max(md), lwd=3, col="red")
 #   md2[i] <- mean(mdtemp2)
 # }
 # 
-# plot(steps, tr2/max(tr2), lwd=3, type="l", 
+# plot(steps, tr2/max(tr2), lwd=3, type="l",
 #      col="blue", xlab=expression(log[10](p)),
 #      ylab="Transitivity and Mean Distance")
 # lines(steps, md2/max(md2), lwd=3, col="red")
@@ -104,7 +104,7 @@ for(i in 1:1000) {
 hist(sw1, main = "Distribution of Transitivity (Small World, f1)",
      xlab = "Transitivity Value", col = "lightblue")
 summary(sw1) # Min: 0.2981, Q1: 0.4125, Med: 0.4367, Mean: 0.4349, Q3: 0.4586, Max: 0.5159
-hist(sw1_deg[[3]])
+hist(sw1_deg[[1000]])
 hist(degree(g1))
 
 ### Required Degree Sequence
