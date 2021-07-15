@@ -1,11 +1,11 @@
-setwd("analysis/klas12b")
+setwd("analysis/friendship/klas12b")
 
 # Import functions
-source("../../functions/random_graph.R")
-source("../../functions/rewire_lattice.R")
-source("../../functions/vboot.R")
-source("../../functions/jackknife.R")
-source("../../functions/numcores.R")
+source("../../../functions/random_graph.R")
+source("../../../functions/rewire_lattice.R")
+source("../../../functions/vboot.R")
+source("../../../functions/jackknife.R")
+source("../../../functions/numcores.R")
 
 library(igraph)
 
@@ -56,9 +56,9 @@ len <- length(steps)
 tr <- numeric(len)
 md <- numeric(len)
 for(i in 1:len) {
-  trtemp <- numeric(100)
-  mdtemp <- numeric(100)
-  for(j in 1:100) {
+  trtemp <- numeric(10)
+  mdtemp <- numeric(10)
+  for(j in 1:10) {
     g <- rewire_lattice(gorder(g1)*15, 2, 10^steps[i])
     trtemp[j] <- transitivity(g)
     mdtemp[j] <- mean_distance(g)
