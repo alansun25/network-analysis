@@ -24,29 +24,35 @@ Data source:
 - 2008\
 
 ## Original Friendship Networks
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 plot(fg1, layout=layout_in_circle(fg1), main = "Friendships at time 1", vertex.label.cex=0.7)
 ```
+
 Transitivity: `r transitivity(fg1)`, Mean Degree: `r mean(degree(fg1))`, Edge Density: `r edge_density(fg1)`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg1) > 1)`\
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.align='center'}
 plot(fg2, layout=layout_in_circle(fg2), main = "Friendships at time 2 (Three months after time 1)", vertex.label.cex=0.7)
 ```
+
 Transitivity: `r transitivity(fg2)`, Mean Degree: `r mean(degree(fg2))`, Edge Density: `r edge_density(fg2)`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg2) > 1)`\
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.align='center'}
 plot(fg3, layout=layout_in_circle(fg3), main = "Friendships at time 3 (Three months after time 2)", vertex.label.cex=0.7)
 ```
+
 Transitivity: `r transitivity(fg3)`, Mean Degree: `r mean(degree(fg3))`, Edge Density: `r edge_density(fg3)`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg3) > 1)`\
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.align='center'}
 plot(fg4, layout=layout_in_circle(fg4), main = "Friendships at time 4 (Three months after time 3)", vertex.label.cex=0.7)
 ```
+
 Transitivity: `r transitivity(fg4)`, Mean Degree: `r mean(degree(fg4))`, Edge Density: `r edge_density(fg4)`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg4) > 1)`\
 
 ## Vertex Bootstrapped Distributions of Network Statistics
 Transitivity:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(tboot_f1, main = "Time 1",
     xlab = "Transitivity", col = "turquoise")
@@ -59,7 +65,8 @@ hist(tboot_f4, main = "Time 4",
 ```
 
 Mean Degree:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(mdboot_f1, main = "Time 1",
     xlab = "Mean Degree", col = "turquoise")
@@ -70,8 +77,10 @@ hist(mdboot_f3, main = "Time 3",
 hist(mdboot_f4, main = "Time 4",
     xlab = "Mean Degree", col = "gold")
 ```
+
 Edge Density:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(dboot_f1, main = "Time 1",
     xlab = "Density", col = "turquoise")
@@ -82,8 +91,10 @@ hist(dboot_f3, main = "Time 3",
 hist(dboot_f4, main = "Time 4",
     xlab = "Density", col = "gold")
 ```
+
 Number of nodes in k-cores where k > 1:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(kboot_f1, main = "Time 1",
     xlab = "Quantity", col = "turquoise")
@@ -97,7 +108,8 @@ hist(kboot_f4, main = "Time 4",
 
 ## Vertex Jackknife Distributions of Network Statistics
 Transitivity:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(tjack_f1, main = "Time 1",
     xlab = "Transitivity", col = "turquoise")
@@ -110,7 +122,8 @@ hist(tjack_f4, main = "Time 4",
 ```
 
 Mean Degree:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(mdjack_f1, main = "Time 1",
     xlab = "Mean Degree", col = "turquoise")
@@ -121,8 +134,10 @@ hist(mdjack_f3, main = "Time 3",
 hist(mdjack_f4, main = "Time 4",
     xlab = "Mean Degree", col = "gold")
 ```
+
 Edge Density:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(djack_f1, main = "Time 1",
     xlab = "Density", col = "turquoise")
@@ -133,8 +148,10 @@ hist(djack_f3, main = "Time 3",
 hist(djack_f4, main = "Time 4",
     xlab = "Density", col = "gold")
 ```
+
 Number of nodes in k-cores where k > 1:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(kjack_f1, main = "Time 1",
     xlab = "Quantity", col = "turquoise")
@@ -151,7 +168,8 @@ hist(kjack_f4, main = "Time 4",
 **The vertical red lines indicate the middle 95% of the distributions.**
 
 Transitivity:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 tbd21 <- tboot_f2 - tboot_f1
 tbd32 <- tboot_f3 - tboot_f2
 tbd43 <- tboot_f4 - tboot_f3
@@ -175,7 +193,8 @@ abline(v = quantile(tbd41, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Mean Degree:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 mdbd21 <- mdboot_f2 - mdboot_f1
 mdbd32 <- mdboot_f3 - mdboot_f2
 mdbd43 <- mdboot_f4 - mdboot_f3
@@ -199,7 +218,8 @@ abline(v = quantile(mdbd41, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Edge Density:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 dbd21 <- dboot_f2 - dboot_f1
 dbd32 <- dboot_f3 - dboot_f2
 dbd43 <- dboot_f4 - dboot_f3
@@ -223,7 +243,8 @@ abline(v = quantile(dbd41, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Number of nodes in k-cores where k > 1:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 kbd21 <- kboot_f2 - kboot_f1
 kbd32 <- kboot_f3 - kboot_f2
 kbd43 <- kboot_f4 - kboot_f3
@@ -251,7 +272,8 @@ abline(v = quantile(kbd41, c(0.025, 0.975)), col = "red", lwd=2)
 **The vertical red lines indicate the middle 95% of the distributions.**
 
 Transitivity:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 tjd21 <- tjack_f2 - tjack_f1
 tjd32 <- tjack_f3 - tjack_f2
 tjd43 <- tjack_f4 - tjack_f3
@@ -275,7 +297,8 @@ abline(v = quantile(tjd41, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Mean Degree:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 mdjd21 <- mdjack_f2 - mdjack_f1
 mdjd32 <- mdjack_f3 - mdjack_f2
 mdjd43 <- mdjack_f4 - mdjack_f3
@@ -299,7 +322,8 @@ abline(v = quantile(mdjd41, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Edge Density:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 djd21 <- djack_f2 - djack_f1
 djd32 <- djack_f3 - djack_f2
 djd43 <- djack_f4 - djack_f3
@@ -323,7 +347,8 @@ abline(v = quantile(djd41, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Number of nodes in k-cores where k > 1:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 kjd21 <- kjack_f2 - kjack_f1
 kjd32 <- kjack_f3 - kjack_f2
 kjd43 <- kjack_f4 - kjack_f3
@@ -350,7 +375,8 @@ abline(v = quantile(kjd41, c(0.025, 0.975)), col = "red", lwd=2)
 **Bootstrap distributions:**
 
 Transitivity:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 t.test(tboot_f2, tboot_f1, paired = TRUE, alternative = "two.sided")
 t.test(tboot_f3, tboot_f2, paired = TRUE, alternative = "two.sided")
 t.test(tboot_f4, tboot_f3, paired = TRUE, alternative = "two.sided")
@@ -360,7 +386,8 @@ t.test(tboot_f4, tboot_f1, paired = TRUE, alternative = "two.sided")
 ```
 
 Mean Degree:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 t.test(mdboot_f2, mdboot_f1, paired = TRUE, alternative = "two.sided")
 t.test(mdboot_f3, mdboot_f2, paired = TRUE, alternative = "two.sided")
 t.test(mdboot_f4, mdboot_f3, paired = TRUE, alternative = "two.sided")
@@ -370,7 +397,8 @@ t.test(mdboot_f4, mdboot_f1, paired = TRUE, alternative = "two.sided")
 ```
 
 Edge Density:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 t.test(dboot_f2, dboot_f1, paired = TRUE, alternative = "two.sided")
 t.test(dboot_f3, dboot_f2, paired = TRUE, alternative = "two.sided")
 t.test(dboot_f4, dboot_f3, paired = TRUE, alternative = "two.sided")
@@ -386,6 +414,7 @@ Number of nodes in k-cores where k > 1:
 **Jackknife distributions:**
 
 Transitivity:
+
 ```{r echo=FALSE}
 t.test(tjack_f2, tjack_f1, paired = TRUE, alternative = "two.sided")
 t.test(tjack_f3, tjack_f2, paired = TRUE, alternative = "two.sided")
@@ -396,6 +425,7 @@ t.test(tjack_f4, tjack_f1, paired = TRUE, alternative = "two.sided")
 ```
 
 Mean Degree:
+
 ```{r echo=FALSE}
 t.test(mdjack_f2, mdjack_f1, paired = TRUE, alternative = "two.sided")
 t.test(mdjack_f3, mdjack_f2, paired = TRUE, alternative = "two.sided")
@@ -406,6 +436,7 @@ t.test(mdjack_f4, mdjack_f1, paired = TRUE, alternative = "two.sided")
 ```
 
 Edge Density:
+
 ```{r echo=FALSE}
 t.test(djack_f2, djack_f1, paired = TRUE, alternative = "two.sided")
 t.test(djack_f3, djack_f2, paired = TRUE, alternative = "two.sided")
@@ -416,6 +447,7 @@ t.test(djack_f4, djack_f1, paired = TRUE, alternative = "two.sided")
 ```
 
 Number of nodes in k-cores where k > 1:
+
 ```{r echo=FALSE}
 t.test(kjack_f2, kjack_f1, paired = TRUE, alternative = "two.sided")
 t.test(kjack_f3, kjack_f2, paired = TRUE, alternative = "two.sided")
@@ -437,27 +469,31 @@ Data source:
 ## Original Tortoise Networks
 **Note: I omitted the network data from the year 1996 because there were only 7 data points, and because I reduced each network to only contain the intersection of nodes, using 1996 would have resulted in too few tortoises.**
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.align='center'}
 plot(tg97, layout=layout_in_circle(tg97), main = "Tortoise interactions in 1997", 
      vertex.label.cex=0.35, vertex.size=5)
 ```
+
 Transitivity: `r transitivity(tg97)`, Mean Degree: `r mean(degree(tg97))`, Edge Density: `r edge_density(tg97)`, Number of nodes in a k-core where k > 1: `r sum(coreness(tg97) > 1)`\
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.align='center'}
 plot(tg98, layout=layout_in_circle(tg98), main = "Tortoise interactions in 1998", 
      vertex.label.cex=0.35, vertex.size=5)
 ```
+
 Transitivity: `r transitivity(tg98)`, Mean Degree: `r mean(degree(tg98))`, Edge Density: `r edge_density(tg98)`, Number of nodes in a k-core where k > 1: `r sum(coreness(tg98) > 1)`\
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.align='center'}
 plot(tg99, layout=layout_in_circle(tg99), main = "Tortoise interactions in 1999", 
      vertex.label.cex=0.35, vertex.size=5)
 ```
+
 Transitivity: `r transitivity(tg99)`, Mean Degree: `r mean(degree(tg99))`, Edge Density: `r edge_density(tg99)`, Number of nodes in a k-core where k > 1: `r sum(coreness(tg99) > 1)`\
 
 ## Vertex Bootstrapped Distributions of Network Statistics
 Transitivity:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(tboot_tg97, main = "1997",
     xlab = "Transitivity", col = "turquoise")
@@ -468,7 +504,8 @@ hist(tboot_tg99, main = "1999",
 ```
 
 Mean Degree:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(mdboot_tg97, main = "1997",
     xlab = "Mean Degree", col = "turquoise")
@@ -479,7 +516,8 @@ hist(mdboot_tg99, main = "1999",
 ```
 
 Edge Density:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(dboot_tg97, main = "1997",
     xlab = "Density", col = "turquoise")
@@ -490,7 +528,8 @@ hist(dboot_tg99, main = "1999",
 ```
 
 Number of nodes in k-cores where k > 1:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(kboot_tg97, main = "1997",
     xlab = "Quantity", col = "turquoise")
@@ -502,7 +541,8 @@ hist(kboot_tg99, main = "1999",
 
 ## Vertex Jackknife Distributions of Network Statistics
 Transitivity:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(tjack_tg97, main = "1997",
     xlab = "Transitivity", col = "turquoise")
@@ -513,7 +553,8 @@ hist(tjack_tg99, main = "1999",
 ```
 
 Mean Degree:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(mdjack_tg97, main = "1997",
     xlab = "Mean Degree", col = "turquoise")
@@ -524,7 +565,8 @@ hist(mdjack_tg99, main = "1999",
 ```
 
 Edge Density:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(djack_tg97, main = "1997",
     xlab = "Density", col = "turquoise")
@@ -535,7 +577,8 @@ hist(djack_tg99, main = "1999",
 ```
 
 Number of nodes in k-cores where k > 1:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 par(mfrow = c(2, 2))
 hist(kjack_tg97, main = "1997",
     xlab = "Quantity", col = "turquoise")
@@ -550,7 +593,8 @@ hist(kjack_tg99, main = "1999",
 **The vertical red lines indicate the middle 95% of the distributions.**
 
 Transitivity:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 ttbd1 <- tboot_tg98 - tboot_tg97
 ttbd2 <- tboot_tg99 - tboot_tg98
 ttbd3 <- tboot_tg99 - tboot_tg97
@@ -565,7 +609,8 @@ abline(v = quantile(ttbd3, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Mean Degree:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 tmdbd1 <- mdboot_tg98 - mdboot_tg97
 tmdbd2 <- mdboot_tg99 - mdboot_tg98
 tmdbd3 <- mdboot_tg99 - mdboot_tg97
@@ -580,7 +625,8 @@ abline(v = quantile(tmdbd3, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Edge Density:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 tdbd1 <- dboot_tg98 - dboot_tg97
 tdbd2 <- dboot_tg99 - dboot_tg98
 tdbd3 <- dboot_tg99 - dboot_tg97
@@ -595,7 +641,8 @@ abline(v = quantile(tdbd3, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Number of nodes in k-cores where k > 1:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 tkbd1 <- kboot_tg98 - kboot_tg97
 tkbd2 <- kboot_tg99 - kboot_tg98
 tkbd3 <- kboot_tg99 - kboot_tg97
@@ -614,7 +661,8 @@ abline(v = quantile(tkbd3, c(0.025, 0.975)), col = "red", lwd=2)
 **The vertical red lines indicate the middle 95% of the distributions.**
 
 Transitivity:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 ttjd1 <- tjack_tg98 - tjack_tg97
 ttjd2 <- tjack_tg99 - tjack_tg98
 ttjd3 <- tjack_tg99 - tjack_tg97
@@ -629,7 +677,8 @@ abline(v = quantile(ttjd3, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Mean Degree:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 tmdjd1 <- mdjack_tg98 - mdjack_tg97
 tmdjd2 <- mdjack_tg99 - mdjack_tg98
 tmdjd3 <- mdjack_tg99 - mdjack_tg97
@@ -644,7 +693,8 @@ abline(v = quantile(tmdjd3, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Edge Density:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 tdjd1 <- djack_tg98 - djack_tg97
 tdjd2 <- djack_tg99 - djack_tg98
 tdjd3 <- djack_tg99 - djack_tg97
@@ -659,7 +709,8 @@ abline(v = quantile(tdjd3, c(0.025, 0.975)), col = "red", lwd=2)
 ```
 
 Number of nodes in k-cores where k > 1:
-```{r echo=FALSE}
+
+```{r echo=FALSE, fig.align='center'}
 tkjd1 <- kjack_tg98 - kjack_tg97
 tkjd2 <- kjack_tg99 - kjack_tg98
 tkjd3 <- kjack_tg99 - kjack_tg97
@@ -677,6 +728,7 @@ abline(v = quantile(tkjd3, c(0.025, 0.975)), col = "red", lwd=2)
 **Bootstrap distributions:**
 
 Transitivity:
+
 ```{r echo=FALSE}
 t.test(tboot_tg98, tboot_tg97, paired = TRUE, alternative = "two.sided")
 t.test(tboot_tg99, tboot_tg98, paired = TRUE, alternative = "two.sided")
@@ -684,6 +736,7 @@ t.test(tboot_tg99, tboot_tg97, paired = TRUE, alternative = "two.sided")
 ```
 
 Mean Degree:
+
 ```{r echo=FALSE}
 t.test(mdboot_tg98, mdboot_tg97, paired = TRUE, alternative = "two.sided")
 t.test(mdboot_tg99, mdboot_tg98, paired = TRUE, alternative = "two.sided")
@@ -691,6 +744,7 @@ t.test(mdboot_tg99, mdboot_tg97, paired = TRUE, alternative = "two.sided")
 ```
 
 Edge Density:
+
 ```{r echo=FALSE}
 t.test(dboot_tg98, dboot_tg97, paired = TRUE, alternative = "two.sided")
 t.test(dboot_tg99, dboot_tg98, paired = TRUE, alternative = "two.sided")
@@ -698,6 +752,7 @@ t.test(dboot_tg99, dboot_tg97, paired = TRUE, alternative = "two.sided")
 ```
 
 Number of nodes in k-cores where k > 1:
+
 ```{r echo=FALSE}
 t.test(kboot_tg98, kboot_tg97, paired = TRUE, alternative = "two.sided")
 t.test(kboot_tg99, kboot_tg98, paired = TRUE, alternative = "two.sided")
@@ -707,6 +762,7 @@ t.test(kboot_tg99, kboot_tg97, paired = TRUE, alternative = "two.sided")
 **Jackknife distributions:**
 
 Transitivity:
+
 ```{r echo=FALSE}
 t.test(tjack_tg98, tjack_tg97, paired = TRUE, alternative = "two.sided")
 t.test(tjack_tg99, tjack_tg98, paired = TRUE, alternative = "two.sided")
@@ -714,6 +770,7 @@ t.test(tjack_tg99, tjack_tg97, paired = TRUE, alternative = "two.sided")
 ```
 
 Mean Degree:
+
 ```{r echo=FALSE}
 t.test(mdjack_tg98, mdjack_tg97, paired = TRUE, alternative = "two.sided")
 t.test(mdjack_tg99, mdjack_tg98, paired = TRUE, alternative = "two.sided")
@@ -721,6 +778,7 @@ t.test(mdjack_tg99, mdjack_tg97, paired = TRUE, alternative = "two.sided")
 ```
 
 Edge Density:
+
 ```{r echo=FALSE}
 t.test(djack_tg98, djack_tg97, paired = TRUE, alternative = "two.sided")
 t.test(djack_tg99, djack_tg98, paired = TRUE, alternative = "two.sided")
@@ -728,6 +786,7 @@ t.test(djack_tg99, djack_tg97, paired = TRUE, alternative = "two.sided")
 ```
 
 Number of nodes in k-cores where k > 1:
+
 ```{r echo=FALSE}
 t.test(kjack_tg98, kjack_tg97, paired = TRUE, alternative = "two.sided")
 t.test(kjack_tg99, kjack_tg98, paired = TRUE, alternative = "two.sided")
