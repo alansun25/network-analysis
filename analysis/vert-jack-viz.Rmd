@@ -8,12 +8,12 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(igraph)
-#  source("vert-jack-viz.R")
+source("vert-jack-viz.R")
 ```
 
 This document contains visualizations showing distributions of the differences in several network statistics over time. The distributions are obtained using the vertex bootstrap and jackknife procedures. Two different temporal networks are examined.
 
-Source code (to generate distributions): 
+Source code (to generate distributions): [https://github.com/alansun25/network-analysis/blob/main/analysis/vert-jack-viz.R](https://github.com/alansun25/network-analysis/blob/main/analysis/vert-jack-viz.R)
 
 # Friendship in a Dutch school class
 Data source:
@@ -27,22 +27,22 @@ Data source:
 ```{r echo=FALSE}
 plot(fg1, layout=layout_in_circle(fg1), main = "Friendships at time 1", vertex.label.cex=0.7)
 ```
-Transitivity: `r transitivity(fg1)`, Mean Degree: `r mean(degree(fg1)))`, Edge Density: `r edge_density(fg1))`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg1) > 1)`\
+Transitivity: `r transitivity(fg1)`, Mean Degree: `r mean(degree(fg1))`, Edge Density: `r edge_density(fg1)`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg1) > 1)`\
 
 ```{r echo=FALSE}
 plot(fg2, layout=layout_in_circle(fg2), main = "Friendships at time 2 (Three months after time 1)", vertex.label.cex=0.7)
 ```
-Transitivity: `r transitivity(fg2)`, Mean Degree: `r mean(degree(fg2)))`, Edge Density: `r edge_density(fg2))`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg2) > 1)`\
+Transitivity: `r transitivity(fg2)`, Mean Degree: `r mean(degree(fg2))`, Edge Density: `r edge_density(fg2)`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg2) > 1)`\
 
 ```{r echo=FALSE}
 plot(fg3, layout=layout_in_circle(fg3), main = "Friendships at time 3 (Three months after time 2)", vertex.label.cex=0.7)
 ```
-Transitivity: `r transitivity(fg3)`, Mean Degree: `r mean(degree(fg3)))`, Edge Density: `r edge_density(fg3))`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg3) > 1)`\
+Transitivity: `r transitivity(fg3)`, Mean Degree: `r mean(degree(fg3))`, Edge Density: `r edge_density(fg3)`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg3) > 1)`\
 
 ```{r echo=FALSE}
 plot(fg4, layout=layout_in_circle(fg4), main = "Friendships at time 4 (Three months after time 3)", vertex.label.cex=0.7)
 ```
-Transitivity: `r transitivity(fg4)`, Mean Degree: `r mean(degree(fg4)))`, Edge Density: `r edge_density(fg4))`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg4) > 1)`\
+Transitivity: `r transitivity(fg4)`, Mean Degree: `r mean(degree(fg4))`, Edge Density: `r edge_density(fg4)`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg4) > 1)`\
 
 ## Vertex Bootstrapped Distributions of Network Statistics
 Transitivity:
@@ -441,19 +441,19 @@ Data source:
 plot(tg97, layout=layout_in_circle(tg97), main = "Tortoise interactions in 1997", 
      vertex.label.cex=0.35, vertex.size=5)
 ```
-Transitivity: `r transitivity(tg97)`, Mean Degree: `r mean(degree(tg97)))`, Edge Density: `r edge_density(tg97))`, Number of nodes in a k-core where k > 1: `r sum(coreness(tg97) > 1)`\
+Transitivity: `r transitivity(tg97)`, Mean Degree: `r mean(degree(tg97))`, Edge Density: `r edge_density(tg97)`, Number of nodes in a k-core where k > 1: `r sum(coreness(tg97) > 1)`\
 
 ```{r echo=FALSE}
 plot(tg98, layout=layout_in_circle(tg98), main = "Tortoise interactions in 1998", 
      vertex.label.cex=0.35, vertex.size=5)
 ```
-Transitivity: `r transitivity(tg98)`, Mean Degree: `r mean(degree(tg98)))`, Edge Density: `r edge_density(tg98))`, Number of nodes in a k-core where k > 1: `r sum(coreness(tg98) > 1)`\
+Transitivity: `r transitivity(tg98)`, Mean Degree: `r mean(degree(tg98))`, Edge Density: `r edge_density(tg98)`, Number of nodes in a k-core where k > 1: `r sum(coreness(tg98) > 1)`\
 
 ```{r echo=FALSE}
 plot(tg99, layout=layout_in_circle(tg99), main = "Tortoise interactions in 1999", 
      vertex.label.cex=0.35, vertex.size=5)
 ```
-Transitivity: `r transitivity(tg99)`, Mean Degree: `r mean(degree(tg99)))`, Edge Density: `r edge_density(tg99))`, Number of nodes in a k-core where k > 1: `r sum(coreness(tg99) > 1)`\
+Transitivity: `r transitivity(tg99)`, Mean Degree: `r mean(degree(tg99))`, Edge Density: `r edge_density(tg99)`, Number of nodes in a k-core where k > 1: `r sum(coreness(tg99) > 1)`\
 
 ## Vertex Bootstrapped Distributions of Network Statistics
 Transitivity:
