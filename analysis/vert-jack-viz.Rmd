@@ -1,0 +1,368 @@
+---
+title: "Visualizations of Network Statistics Over Time Using Vertex Bootstrap and Jackknife"
+author: "Alan Sun"
+date: "7/15/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(igraph)
+#  source("vert-jack-viz.R")
+```
+
+This document contains visualizations showing distributions of the differences in several network statistics over time. The distributions are obtained using the vertex bootstrap and jackknife procedures. Two different temporal networks are examined.
+
+Source code (to generate distributions): 
+
+# Friendship in a Dutch school class
+Data source:
+
+- **[RSiena](https://www.stats.ox.ac.uk/~snijders/siena/)**
+- Andrea Knecht
+- [https://www.stats.ox.ac.uk/~snijders/siena/tutorial2010_data.htm](https://www.stats.ox.ac.uk/~snijders/siena/tutorial2010_data.htm)
+- 2008\
+
+## Original Friendship Networks
+```{r echo=FALSE}
+plot(fg1, layout=layout_in_circle(fg1), main = "Friendships at time 1", vertex.label.cex=0.7)
+```
+Transitivity: `r transitivity(fg1)`, Mean Degree: `r mean(degree(fg1)))`, Edge Density: `r edge_density(fg1))`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg1) > 1)`\
+
+```{r echo=FALSE}
+plot(fg2, layout=layout_in_circle(fg2), main = "Friendships at time 2 (Three months after time 1)", vertex.label.cex=0.7)
+```
+Transitivity: `r transitivity(fg2)`, Mean Degree: `r mean(degree(fg2)))`, Edge Density: `r edge_density(fg2))`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg2) > 1)`\
+
+```{r echo=FALSE}
+plot(fg3, layout=layout_in_circle(fg3), main = "Friendships at time 3 (Three months after time 2)", vertex.label.cex=0.7)
+```
+Transitivity: `r transitivity(fg3)`, Mean Degree: `r mean(degree(fg3)))`, Edge Density: `r edge_density(fg3))`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg3) > 1)`\
+
+```{r echo=FALSE}
+plot(fg4, layout=layout_in_circle(fg4), main = "Friendships at time 4 (Three months after time 3)", vertex.label.cex=0.7)
+```
+Transitivity: `r transitivity(fg4)`, Mean Degree: `r mean(degree(fg4)))`, Edge Density: `r edge_density(fg4))`, Number of nodes in a k-core where k > 1: `r sum(coreness(fg4) > 1)`\
+
+## Vertex Bootstrapped Distributions of Network Statistics
+Transitivity:
+```{r echo=FALSE}
+par(mfrow = c(2, 2))
+hist(tboot_f1, main = "Time 1",
+    xlab = "Transitivity", col = "turquoise")
+hist(tboot_f2, main = "Time 2",
+    xlab = "Transitivity", col = "lavender")
+hist(tboot_f3, main = "Time 3",
+    xlab = "Transitivity", col = "lightblue")
+hist(tboot_f4, main = "Time 4",
+    xlab = "Transitivity", col = "gold")
+```
+
+Mean Degree:
+```{r echo=FALSE}
+par(mfrow = c(2, 2))
+hist(mdboot_f1, main = "Time 1",
+    xlab = "Mean Degree", col = "turquoise")
+hist(mdboot_f2, main = "Time 2",
+    xlab = "Mean Degree", col = "lavender")
+hist(mdboot_f3, main = "Time 3",
+    xlab = "Mean Degree", col = "lightblue")
+hist(mdboot_f4, main = "Time 4",
+    xlab = "Mean Degree", col = "gold")
+```
+Edge Density:
+```{r echo=FALSE}
+par(mfrow = c(2, 2))
+hist(dboot_f1, main = "Time 1",
+    xlab = "Density", col = "turquoise")
+hist(dboot_f2, main = "Time 2",
+    xlab = "Density", col = "lavender")
+hist(dboot_f3, main = "Time 3",
+    xlab = "Density", col = "lightblue")
+hist(dboot_f4, main = "Time 4",
+    xlab = "Density", col = "gold")
+```
+Number of nodes in k-cores where k > 1:
+```{r echo=FALSE}
+par(mfrow = c(2, 2))
+hist(kboot_f1, main = "Time 1",
+    xlab = "Quantity", col = "turquoise")
+hist(kboot_f2, main = "Time 2",
+    xlab = "Quantity", col = "lavender")
+hist(kboot_f3, main = "Time 3",
+    xlab = "Quantity", col = "lightblue")
+hist(kboot_f4, main = "Time 4",
+    xlab = "Quantity", col = "gold")
+```
+
+## Vertex Jackknife Distributions of Network Statistics
+Transitivity:
+```{r echo=FALSE}
+par(mfrow = c(2, 2))
+hist(tjack_f1, main = "Time 1",
+    xlab = "Transitivity", col = "turquoise")
+hist(tjack_f2, main = "Time 2",
+    xlab = "Transitivity", col = "lavender")
+hist(tjack_f3, main = "Time 3",
+    xlab = "Transitivity", col = "lightblue")
+hist(tjack_f4, main = "Time 4",
+    xlab = "Transitivity", col = "gold")
+```
+
+Mean Degree:
+```{r echo=FALSE}
+par(mfrow = c(2, 2))
+hist(mdjack_f1, main = "Time 1",
+    xlab = "Mean Degree", col = "turquoise")
+hist(mdjack_f2, main = "Time 2",
+    xlab = "Mean Degree", col = "lavender")
+hist(mdjack_f3, main = "Time 3",
+    xlab = "Mean Degree", col = "lightblue")
+hist(mdjack_f4, main = "Time 4",
+    xlab = "Mean Degree", col = "gold")
+```
+Edge Density:
+```{r echo=FALSE}
+par(mfrow = c(2, 2))
+hist(djack_f1, main = "Time 1",
+    xlab = "Density", col = "turquoise")
+hist(djack_f2, main = "Time 2",
+    xlab = "Density", col = "lavender")
+hist(djack_f3, main = "Time 3",
+    xlab = "Density", col = "lightblue")
+hist(djack_f4, main = "Time 4",
+    xlab = "Density", col = "gold")
+```
+Number of nodes in k-cores where k > 1:
+```{r echo=FALSE}
+par(mfrow = c(2, 2))
+hist(kjack_f1, main = "Time 1",
+    xlab = "Quantity", col = "turquoise")
+hist(kjack_f2, main = "Time 2",
+    xlab = "Quantity", col = "lavender")
+hist(kjack_f3, main = "Time 3",
+    xlab = "Quantity", col = "lightblue")
+hist(kjack_f4, main = "Time 4",
+    xlab = "Quantity", col = "gold")
+```
+
+## Bootstrap distributions of the differences in network statistics between time points
+
+**The vertical red lines indicate the middle 95% of the distributions.**
+
+Transitivity:
+```{r echo=FALSE}
+tbd21 <- tboot_f2 - tboot_f1
+tbd32 <- tboot_f3 - tboot_f2
+tbd43 <- tboot_f4 - tboot_f3
+tbd31 <- tboot_f3 - tboot_f1
+tbd42 <- tboot_f4 - tboot_f2
+tbd41 <- tboot_f4 - tboot_f1
+
+par(mfrow = c(3, 2))
+hist(tbd21, main = "Time 2 - Time 1", xlab = "Difference", col = "aquamarine")
+abline(v = quantile(tbd21, c(0.025, 0.975)), col = "red", lwd=2)
+hist(tbd32, main = "Time 3 - Time 2", xlab = "Difference", col = "plum2")
+abline(v = quantile(tbd32, c(0.025, 0.975)), col = "red", lwd=2)
+hist(tbd43, main = "Time 4 - Time 3", xlab = "Difference", col = "khaki1")
+abline(v = quantile(tbd43, c(0.025, 0.975)), col = "red", lwd=2)
+hist(tbd31, main = "Time 3 - Time 1", xlab = "Difference", col = "olivedrab2")
+abline(v = quantile(tbd31, c(0.025, 0.975)), col = "red", lwd=2)
+hist(tbd42, main = "Time 4 - Time 2", xlab = "Difference", col = "purple1")
+abline(v = quantile(tbd42, c(0.025, 0.975)), col = "red", lwd=2)
+hist(tbd41, main = "Time 4 - Time 1", xlab = "Difference", col = "slateblue")
+abline(v = quantile(tbd41, c(0.025, 0.975)), col = "red", lwd=2)
+```
+
+Mean Degree:
+```{r echo=FALSE}
+mdbd21 <- mdboot_f2 - mdboot_f1
+mdbd32 <- mdboot_f3 - mdboot_f2
+mdbd43 <- mdboot_f4 - mdboot_f3
+mdbd31 <- mdboot_f3 - mdboot_f1
+mdbd42 <- mdboot_f4 - mdboot_f2
+mdbd41 <- mdboot_f4 - mdboot_f1
+
+par(mfrow = c(3, 2))
+hist(mdbd21, main = "Time 2 - Time 1", xlab = "Difference", col = "aquamarine")
+abline(v = quantile(mdbd21, c(0.025, 0.975)), col = "red", lwd=2)
+hist(mdbd32, main = "Time 3 - Time 2", xlab = "Difference", col = "plum2")
+abline(v = quantile(mdbd32, c(0.025, 0.975)), col = "red", lwd=2)
+hist(mdbd43, main = "Time 4 - Time 3", xlab = "Difference", col = "khaki1")
+abline(v = quantile(mdbd43, c(0.025, 0.975)), col = "red", lwd=2)
+hist(mdbd31, main = "Time 3 - Time 1", xlab = "Difference", col = "olivedrab2")
+abline(v = quantile(mdbd31, c(0.025, 0.975)), col = "red", lwd=2)
+hist(mdbd42, main = "Time 4 - Time 2", xlab = "Difference", col = "purple1")
+abline(v = quantile(mdbd42, c(0.025, 0.975)), col = "red", lwd=2)
+hist(mdbd41, main = "Time 4 - Time 1", xlab = "Difference", col = "slateblue")
+abline(v = quantile(mdbd41, c(0.025, 0.975)), col = "red", lwd=2)
+```
+
+Edge Density:
+```{r echo=FALSE}
+dbd21 <- dboot_f2 - dboot_f1
+dbd32 <- dboot_f3 - dboot_f2
+dbd43 <- dboot_f4 - dboot_f3
+dbd31 <- dboot_f3 - dboot_f1
+dbd42 <- dboot_f4 - dboot_f2
+dbd41 <- dboot_f4 - dboot_f1
+
+par(mfrow = c(3, 2))
+hist(dbd21, main = "Time 2 - Time 1", xlab = "Difference", col = "aquamarine")
+abline(v = quantile(dbd21, c(0.025, 0.975)), col = "red", lwd=2)
+hist(dbd32, main = "Time 3 - Time 2", xlab = "Difference", col = "plum2")
+abline(v = quantile(dbd32, c(0.025, 0.975)), col = "red", lwd=2)
+hist(dbd43, main = "Time 4 - Time 3", xlab = "Difference", col = "khaki1")
+abline(v = quantile(dbd43, c(0.025, 0.975)), col = "red", lwd=2)
+hist(dbd31, main = "Time 3 - Time 1", xlab = "Difference", col = "olivedrab2")
+abline(v = quantile(dbd31, c(0.025, 0.975)), col = "red", lwd=2)
+hist(dbd42, main = "Time 4 - Time 2", xlab = "Difference", col = "purple1")
+abline(v = quantile(dbd42, c(0.025, 0.975)), col = "red", lwd=2)
+hist(dbd41, main = "Time 4 - Time 1", xlab = "Difference", col = "slateblue")
+abline(v = quantile(dbd41, c(0.025, 0.975)), col = "red", lwd=2)
+```
+
+Number of nodes in k-cores where k > 1:
+```{r echo=FALSE}
+kbd21 <- kboot_f2 - kboot_f1
+kbd32 <- kboot_f3 - kboot_f2
+kbd43 <- kboot_f4 - kboot_f3
+kbd31 <- kboot_f3 - kboot_f1
+kbd42 <- kboot_f4 - kboot_f2
+kbd41 <- kboot_f4 - kboot_f1
+
+par(mfrow = c(3, 2))
+hist(kbd21, main = "Time 2 - Time 1", xlab = "Difference", col = "aquamarine")
+abline(v = quantile(kbd21, c(0.025, 0.975)), col = "red", lwd=2)
+hist(kbd32, main = "Time 3 - Time 2", xlab = "Difference", col = "plum2")
+abline(v = quantile(kbd32, c(0.025, 0.975)), col = "red", lwd=2)
+hist(kbd43, main = "Time 4 - Time 3", xlab = "Difference", col = "khaki1")
+abline(v = quantile(kbd43, c(0.025, 0.975)), col = "red", lwd=2)
+hist(kbd31, main = "Time 3 - Time 1", xlab = "Difference", col = "olivedrab2")
+abline(v = quantile(kbd31, c(0.025, 0.975)), col = "red", lwd=2)
+hist(kbd42, main = "Time 4 - Time 2", xlab = "Difference", col = "purple1")
+abline(v = quantile(kbd42, c(0.025, 0.975)), col = "red", lwd=2)
+hist(kbd41, main = "Time 4 - Time 1", xlab = "Difference", col = "slateblue")
+abline(v = quantile(kbd41, c(0.025, 0.975)), col = "red", lwd=2)
+```
+
+## Jackknife distributions of the differences in network statistics between time points
+
+**The vertical red lines indicate the middle 95% of the distributions.**
+
+Transitivity:
+```{r echo=FALSE}
+tjd21 <- tjack_f2 - tjack_f1
+tjd32 <- tjack_f3 - tjack_f2
+tjd43 <- tjack_f4 - tjack_f3
+tjd31 <- tjack_f3 - tjack_f1
+tjd42 <- tjack_f4 - tjack_f2
+tjd41 <- tjack_f4 - tjack_f1
+
+par(mfrow = c(3, 2))
+hist(tjd21, main = "Time 2 - Time 1", xlab = "Difference", col = "aquamarine")
+abline(v = quantile(tjd21, c(0.025, 0.975)), col = "red", lwd=2)
+hist(tjd32, main = "Time 3 - Time 2", xlab = "Difference", col = "plum2")
+abline(v = quantile(tjd32, c(0.025, 0.975)), col = "red", lwd=2)
+hist(tjd43, main = "Time 4 - Time 3", xlab = "Difference", col = "khaki1")
+abline(v = quantile(tjd43, c(0.025, 0.975)), col = "red", lwd=2)
+hist(tjd31, main = "Time 3 - Time 1", xlab = "Difference", col = "olivedrab2")
+abline(v = quantile(tjd31, c(0.025, 0.975)), col = "red", lwd=2)
+hist(tjd42, main = "Time 4 - Time 2", xlab = "Difference", col = "purple1")
+abline(v = quantile(tjd42, c(0.025, 0.975)), col = "red", lwd=2)
+hist(tjd41, main = "Time 4 - Time 1", xlab = "Difference", col = "slateblue")
+abline(v = quantile(tjd41, c(0.025, 0.975)), col = "red", lwd=2)
+```
+
+Mean Degree:
+```{r echo=FALSE}
+mdjd21 <- mdjack_f2 - mdjack_f1
+mdjd32 <- mdjack_f3 - mdjack_f2
+mdjd43 <- mdjack_f4 - mdjack_f3
+mdjd31 <- mdjack_f3 - mdjack_f1
+mdjd42 <- mdjack_f4 - mdjack_f2
+mdjd41 <- mdjack_f4 - mdjack_f1
+
+par(mfrow = c(3, 2))
+hist(mdjd21, main = "Time 2 - Time 1", xlab = "Difference", col = "aquamarine")
+abline(v = quantile(mdjd21, c(0.025, 0.975)), col = "red", lwd=2)
+hist(mdjd32, main = "Time 3 - Time 2", xlab = "Difference", col = "plum2")
+abline(v = quantile(mdjd32, c(0.025, 0.975)), col = "red", lwd=2)
+hist(mdjd43, main = "Time 4 - Time 3", xlab = "Difference", col = "khaki1")
+abline(v = quantile(mdjd43, c(0.025, 0.975)), col = "red", lwd=2)
+hist(mdjd31, main = "Time 3 - Time 1", xlab = "Difference", col = "olivedrab2")
+abline(v = quantile(mdjd31, c(0.025, 0.975)), col = "red", lwd=2)
+hist(mdjd42, main = "Time 4 - Time 2", xlab = "Difference", col = "purple1")
+abline(v = quantile(mdjd42, c(0.025, 0.975)), col = "red", lwd=2)
+hist(mdjd41, main = "Time 4 - Time 1", xlab = "Difference", col = "slateblue")
+abline(v = quantile(mdjd41, c(0.025, 0.975)), col = "red", lwd=2)
+```
+
+Edge Density:
+```{r echo=FALSE}
+djd21 <- djack_f2 - djack_f1
+djd32 <- djack_f3 - djack_f2
+djd43 <- djack_f4 - djack_f3
+djd31 <- djack_f3 - djack_f1
+djd42 <- djack_f4 - djack_f2
+djd41 <- djack_f4 - djack_f1
+
+par(mfrow = c(3, 2))
+hist(djd21, main = "Time 2 - Time 1", xlab = "Difference", col = "aquamarine")
+abline(v = quantile(djd21, c(0.025, 0.975)), col = "red", lwd=2)
+hist(djd32, main = "Time 3 - Time 2", xlab = "Difference", col = "plum2")
+abline(v = quantile(djd32, c(0.025, 0.975)), col = "red", lwd=2)
+hist(djd43, main = "Time 4 - Time 3", xlab = "Difference", col = "khaki1")
+abline(v = quantile(djd43, c(0.025, 0.975)), col = "red", lwd=2)
+hist(djd31, main = "Time 3 - Time 1", xlab = "Difference", col = "olivedrab2")
+abline(v = quantile(djd31, c(0.025, 0.975)), col = "red", lwd=2)
+hist(djd42, main = "Time 4 - Time 2", xlab = "Difference", col = "purple1")
+abline(v = quantile(djd42, c(0.025, 0.975)), col = "red", lwd=2)
+hist(djd41, main = "Time 4 - Time 1", xlab = "Difference", col = "slateblue")
+abline(v = quantile(djd41, c(0.025, 0.975)), col = "red", lwd=2)
+```
+
+Number of nodes in k-cores where k > 1:
+```{r echo=FALSE}
+kjd21 <- kjack_f2 - kjack_f1
+kjd32 <- kjack_f3 - kjack_f2
+kjd43 <- kjack_f4 - kjack_f3
+kjd31 <- kjack_f3 - kjack_f1
+kjd42 <- kjack_f4 - kjack_f2
+kjd41 <- kjack_f4 - kjack_f1
+
+par(mfrow = c(3, 2))
+hist(kjd21, main = "Time 2 - Time 1", xlab = "Difference", col = "aquamarine")
+abline(v = quantile(kjd21, c(0.025, 0.975)), col = "red", lwd=2)
+hist(kjd32, main = "Time 3 - Time 2", xlab = "Difference", col = "plum2")
+abline(v = quantile(kjd32, c(0.025, 0.975)), col = "red", lwd=2)
+hist(kjd43, main = "Time 4 - Time 3", xlab = "Difference", col = "khaki1")
+abline(v = quantile(kjd43, c(0.025, 0.975)), col = "red", lwd=2)
+hist(kjd31, main = "Time 3 - Time 1", xlab = "Difference", col = "olivedrab2")
+abline(v = quantile(kjd31, c(0.025, 0.975)), col = "red", lwd=2)
+hist(kjd42, main = "Time 4 - Time 2", xlab = "Difference", col = "purple1")
+abline(v = quantile(kjd42, c(0.025, 0.975)), col = "red", lwd=2)
+hist(kjd41, main = "Time 4 - Time 1", xlab = "Difference", col = "slateblue")
+abline(v = quantile(kjd41, c(0.025, 0.975)), col = "red", lwd=2)
+```
+
+### If we assume that the distributions are normal, do we see significance in the same places?
+```{r}
+
+```
+
+
+
+# Tortoise Interactions
+Data source: 
+
+- **The Network Data Repository with Interactive Graph Analytics and Visualization**
+- Ryan A. Rossi and Nesreen K. Ahmed
+- *AAAI*
+- [http://networkrepository.com/](http://networkrepository.com/)
+- 2015\
+
+```{r echo=FALSE}
+
+```
+

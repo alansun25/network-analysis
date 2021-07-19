@@ -54,19 +54,19 @@ vboot <- function(g, v) {
 
 # Tests
 t <- make_lattice(length=10, dim=1, nei=2, circular = TRUE)
-length(vertex_attr(t))
-vt <- vboot(t, vertices(sample(V(t), gorder(t), replace=TRUE)))
-
-length(E(t))
-length(E(vt))
-
-plot(t)
-plot(vt, layout=layout_nicely(vt))
-
-asdf <- make_ring(10) %>% 
-  set_vertex_attr("label", value = LETTERS[1:10]) %>%
-  set_vertex_attr("color", index=1, value="blue")
-vasdf <- vboot(asdf, vertices(sample(V(asdf), gorder(asdf), replace=TRUE)))
-vertex_attr(vasdf)
-vertex_attr(asdf)
+# length(vertex_attr(t))
+# vt <- vboot(t, vertices(sample(V(t), gorder(t), replace=TRUE)))
+# 
+# length(E(t))
+# length(E(vt))
+# 
+# plot(t)
+# plot(vt, layout=layout_nicely(vt))
+# 
+# asdf <- make_ring(10) %>% 
+#   set_vertex_attr("label", value = LETTERS[1:10]) %>%
+#   set_vertex_attr("color", index=1, value="blue")
+# vasdf <- vboot(asdf, vertices(sample(V(asdf), gorder(asdf), replace=TRUE)))
+# vertex_attr(vasdf)
+# vertex_attr(asdf)
 

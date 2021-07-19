@@ -9,7 +9,7 @@ jackknife <- function(g, stat) {
     stop("Object must be an igraph graph.")
   }
   
-  if (stat != "density" && stat != "transitivity") {
+  if (stat != "density" && stat != "transitivity" && stat != "meandegree" && stat != "corenessnum") {
     stop("Provided statistic not currently supported.")
   }
   
@@ -20,19 +20,27 @@ jackknife <- function(g, stat) {
     jg <- delete_vertices(g, V(g)[i])
     if (stat == "density") {
       jk_stats <- append(jk_stats, edge_density(jg))
-    } else {
+    } else if (stat == "transitivity") {
       jk_stats <- append(jk_stats, transitivity(jg, type="global"))
+    } else if (stat == "meandegree") {
+      jk_stats <- append(jk_stats, mean(degree(jg)))
+    } else {
+      jg_coreness <- coreness(jg)
+      jk_stats <- append(jk_stats, sum(jg_coreness > 1))
     }
   }
   
   return(jk_stats)
 }
 
-s <- make_star(30, "undirected")
-plot(s)
-(jackknife(s, "density"))
-
-t <- make_lattice(length=12, dim=1, nei = 2)
-plot(t)
-(jackknife(t, "density"))
-(jackknife(t, "transitivity"))
+# Tests
+# s <- make_star(30, "undirected")
+# plot(s)
+# (jackknife(s, "density"))
+# 
+# t <- make_lattice(length=12, dim=1, nei = 2)
+# plot(t)
+# (jackknife(t, "density"))
+# (jackknife(t, "transitivity"))
+# (jackknife(t, "meandegree"))
+# (jackknife(t, "corenessnum"))
