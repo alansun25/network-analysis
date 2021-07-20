@@ -1,12 +1,17 @@
 ---
-title: "Table comparing the middle 95% of the bootstrap and jackknife distributions displaying the difference in network statistics over time"
+title: "Tables comparing observed network statistics with 95% intervals for bootstrap/jackknife differences and degree sequences at different time points"
 author: "Alan Sun"
-date: "7/19/2021"
-output: pdf_document
+date: "7/20/2021"
+output: 
+  pdf_document:
+      extra_dependencies: ["makecell"]
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(igraph)
+library(knitr)
+library(kableExtra)
 load("env.RData")
 ```
 
@@ -28,29 +33,9 @@ tjd31 <- tjack_f3 - tjack_f1
 tjd42 <- tjack_f4 - tjack_f2
 tjd41 <- tjack_f4 - tjack_f1
 
-tdd21 <- tdeg_f2 - tdeg_f1
-tdd32 <- tdeg_f3 - tdeg_f2
-tdd43 <- tdeg_f4 - tdeg_f3
-tdd31 <- tdeg_f3 - tdeg_f1
-tdd42 <- tdeg_f4 - tdeg_f2
-tdd41 <- tdeg_f4 - tdeg_f1
+CItbd21 <- round(quantile(tbd21, c(.025, .975)), 3)
+CItjd21 <- round(quantile(tjd21, c(.025, .975)), 3)
 
-ft <- matrix(NA, nrow = 6, ncol = 6)
-rownames(ft) <- c('T2 - T1', 'T3 - T2', 'T4 - T3', 'T3 - T1', 'T4 - T2', 'T4 - T1')
-colnames(ft) <- c('Boot 2.5%', 'Boot 97.5%', 'Jack 2.5%', 'Jack 97.5%', 'Degseq 2.5%', 'Degseq 97.5%')
-
-ft[1,] <- c(quantile(tbd21, c(.025, .975)), quantile(tjd21, c(.025, .975)), quantile(tdd21, c(.025, .975)))
-ft[2,] <- c(quantile(tbd32, c(.025, .975)), quantile(tjd32, c(.025, .975)), quantile(tdd32, c(.025, .975)))
-ft[3,] <- c(quantile(tbd43, c(.025, .975)), quantile(tjd43, c(.025, .975)), quantile(tdd43, c(.025, .975)))
-ft[4,] <- c(quantile(tbd31, c(.025, .975)), quantile(tjd31, c(.025, .975)), quantile(tdd31, c(.025, .975)))
-ft[5,] <- c(quantile(tbd42, c(.025, .975)), quantile(tjd42, c(.025, .975)), quantile(tdd42, c(.025, .975)))
-ft[6,] <- c(quantile(tbd41, c(.025, .975)), quantile(tjd41, c(.025, .975)), quantile(tdd41, c(.025, .975)))
-
-as.table(ft)
-```
-
-## Mean Degree
-```{r echo=FALSE}
 mbd21 <- mboot_f2 - mboot_f1
 mbd32 <- mboot_f3 - mboot_f2
 mbd43 <- mboot_f4 - mboot_f3
@@ -64,6 +49,107 @@ mjd43 <- mjack_f4 - mjack_f3
 mjd31 <- mjack_f3 - mjack_f1
 mjd42 <- mjack_f4 - mjack_f2
 mjd41 <- mjack_f4 - mjack_f1
+
+CImbd21 <- round(quantile(mbd21, c(.025, .975)), 3)
+CImjd21 <- round(quantile(mjd21, c(.025, .975)), 3)
+
+dbd21 <- dboot_f2 - dboot_f1
+dbd32 <- dboot_f3 - dboot_f2
+dbd43 <- dboot_f4 - dboot_f3
+dbd31 <- dboot_f3 - dboot_f1
+dbd42 <- dboot_f4 - dboot_f2
+dbd41 <- dboot_f4 - dboot_f1
+
+djd21 <- djack_f2 - djack_f1
+djd32 <- djack_f3 - djack_f2
+djd43 <- djack_f4 - djack_f3
+djd31 <- djack_f3 - djack_f1
+djd42 <- djack_f4 - djack_f2
+djd41 <- djack_f4 - djack_f1
+
+CIdbd21 <- round(quantile(dbd21, c(.025, .975)), 3)
+CIdjd21 <- round(quantile(djd21, c(.025, .975)), 3)
+
+kbd21 <- kboot_f2 - kboot_f1
+kbd32 <- kboot_f3 - kboot_f2
+kbd43 <- kboot_f4 - kboot_f3
+kbd31 <- kboot_f3 - kboot_f1
+kbd42 <- kboot_f4 - kboot_f2
+kbd41 <- kboot_f4 - kboot_f1
+
+kjd21 <- kjack_f2 - kjack_f1
+kjd32 <- kjack_f3 - kjack_f2
+kjd43 <- kjack_f4 - kjack_f3
+kjd31 <- kjack_f3 - kjack_f1
+kjd42 <- kjack_f4 - kjack_f2
+kjd41 <- kjack_f4 - kjack_f1
+
+CIkbd21 <- round(quantile(kbd21, c(.025, .975)), 3)
+CIkjd21 <- round(quantile(kjd21, c(.025, .975)), 3)
+
+tf1 <- transitivity(fg1)
+tf2 <- transitivity(fg2)
+tf3 <- transitivity(fg3)
+tf4 <- transitivity(fg4)
+
+mf1 <- mean(degree(fg1))
+mf2 <- mean(degree(fg2))
+mf3 <- mean(degree(fg3))
+mf4 <- mean(degree(fg4))
+
+df1 <- edge_density(fg1)
+df2 <- edge_density(fg2)
+df3 <- edge_density(fg3)
+df4 <- edge_density(fg4)
+
+kf1 <- sum(coreness(fg1) > 1)
+kf2 <- sum(coreness(fg2) > 1)
+kf3 <- sum(coreness(fg3) > 1)
+kf4 <- sum(coreness(fg4) > 1)
+
+ptb21 <- paste("boot:", "[", paste(CItbd21[1], CItbd21[2], sep=", "), "]")
+ptj21 <- paste("jack:", "[", paste(CItjd21[1], CItjd21[2], sep=", "), "]")
+pmb21 <- paste("boot:", "[", paste(CImbd21[1], CImbd21[2], sep=", "), "]")
+pmj21 <- paste("jack:", "[", paste(CImjd21[1], CImjd21[2], sep=", "), "]")
+pdb21 <- paste("boot:", "[", paste(CIdbd21[1], CIdbd21[2], sep=", "), "]")
+pdj21 <- paste("jack:", "[", paste(CIdjd21[1], CIdjd21[2], sep=", "), "]")
+pkb21 <- paste("boot:", "[", paste(CIkbd21[1], CIkbd21[2], sep=", "), "]")
+pkj21 <- paste("jack:", "[", paste(CIkjd21[1], CIkjd21[2], sep=", "), "]")
+```
+
+```{=latex}
+\begin{center}
+Time points 1 and 2
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Statistic} & \textbf{T1} & \textbf{T2} & \textbf{T2 - T1} & \textbf{95\% difference interval} & \textbf{95\% degseq} \\
+\hline
+Transitivity & `r round(tf1, 3)` & `r round(tf2, 3)` & `r round(tf2-tf1, 3)` & \makecell{`r ptb21` \\ `r ptj21`} & F \\
+\hline
+Mean Degree & `r round(mf1, 3)` & `r round(mf2, 3)` & `r round(mf2-mf1, 3)` & \makecell{`r pmb21` \\ `r pmj21`} & F \\
+\hline
+Edge Density & `r round(df1, 3)` & `r round(df2, 3)` & `r round(df2-df1, 3)` & \makecell{`r pdb21` \\ `r pdj21`} & F \\
+\hline
+Coreness, k > 1 & `r round(kf1, 3)` & `r round(kf2, 3)` & `r round(kf2-kf1, 3)` & \makecell{`r pkb21` \\ `r pkj21`} & F \\
+\hline
+\end{tabular}
+\end{center}
+```
+
+
+<!-- | Statistic       | T1    | T2    | T2 - T1   | 95% C.I.                               | T1    | -->
+<!-- |:----------------|:-----:|:-----:|:---------:|:--------------------------------------:|:-----:| -->
+<!-- | Transitivity    |`r round(tf1, 3)`|`r round(tf2, 3)`|`r round(tf2-tf1, 3)`|`r cat(paste(ptb21, ptj21, sep = "\n"))`|       | -->
+<!-- | Mean Degree     |`r round(mf1, 3)`|`r round(mf2, 3)`|`r round(mf2-mf1, 3)`|                                        |       | -->
+<!-- | Edge Density    |`r round(df1, 3)`|`r round(df2, 3)`|`r round(df2-df1, 3)`|                                        |       | -->
+<!-- | Coreness, k > 1 |`r round(kf1, 3)`|`r round(kf2, 3)`|`r round(kf2-kf1, 3)`|                                        |       | -->
+
+## Mean Degree
+```{r echo=FALSE}
+
 
 mdd21 <- mdeg_f2 - mdeg_f1
 mdd32 <- mdeg_f3 - mdeg_f2
@@ -88,19 +174,7 @@ as.table(fm)
 
 ## Edge Density
 ```{r echo=FALSE}
-dbd21 <- dboot_f2 - dboot_f1
-dbd32 <- dboot_f3 - dboot_f2
-dbd43 <- dboot_f4 - dboot_f3
-dbd31 <- dboot_f3 - dboot_f1
-dbd42 <- dboot_f4 - dboot_f2
-dbd41 <- dboot_f4 - dboot_f1
 
-djd21 <- djack_f2 - djack_f1
-djd32 <- djack_f3 - djack_f2
-djd43 <- djack_f4 - djack_f3
-djd31 <- djack_f3 - djack_f1
-djd42 <- djack_f4 - djack_f2
-djd41 <- djack_f4 - djack_f1
 
 ddd21 <- ddeg_f2 - ddeg_f1
 ddd32 <- ddeg_f3 - ddeg_f2
@@ -125,19 +199,7 @@ as.table(fd)
 
 ## Number of nodes in k-cores where k > 1
 ```{r echo=FALSE}
-kbd21 <- kboot_f2 - kboot_f1
-kbd32 <- kboot_f3 - kboot_f2
-kbd43 <- kboot_f4 - kboot_f3
-kbd31 <- kboot_f3 - kboot_f1
-kbd42 <- kboot_f4 - kboot_f2
-kbd41 <- kboot_f4 - kboot_f1
 
-kjd21 <- kjack_f2 - kjack_f1
-kjd32 <- kjack_f3 - kjack_f2
-kjd43 <- kjack_f4 - kjack_f3
-kjd31 <- kjack_f3 - kjack_f1
-kjd42 <- kjack_f4 - kjack_f2
-kjd41 <- kjack_f4 - kjack_f1
 
 kdd21 <- kdeg_f2 - kdeg_f1
 kdd32 <- kdeg_f3 - kdeg_f2
