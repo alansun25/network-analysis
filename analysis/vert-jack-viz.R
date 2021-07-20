@@ -32,10 +32,10 @@ tjack_f2 <- jackknife(fg2, "transitivity")
 tjack_f3 <- jackknife(fg3, "transitivity")
 tjack_f4 <- jackknife(fg4, "transitivity")
 
-mdjack_f1 <- jackknife(fg1, "meandegree")
-mdjack_f2 <- jackknife(fg2, "meandegree")
-mdjack_f3 <- jackknife(fg3, "meandegree")
-mdjack_f4 <- jackknife(fg4, "meandegree")
+mjack_f1 <- jackknife(fg1, "meandegree")
+mjack_f2 <- jackknife(fg2, "meandegree")
+mjack_f3 <- jackknife(fg3, "meandegree")
+mjack_f4 <- jackknife(fg4, "meandegree")
 
 djack_f1 <- jackknife(fg1, "density")
 djack_f2 <- jackknife(fg2, "density")
@@ -54,25 +54,37 @@ set.seed(346)
 # Only sampling nodes from fg1 since all four networks have the same nodes
 v <- vertices(sample(V(fg1), gorder(fg1), replace=TRUE))
 
-tboot_f1 <- sapply(numeric(100), function(x) x + transitivity(vboot(fg1, v)))
-tboot_f2 <- sapply(numeric(100), function(x) x + transitivity(vboot(fg2, v)))
-tboot_f3 <- sapply(numeric(100), function(x) x + transitivity(vboot(fg3, v)))
-tboot_f4 <- sapply(numeric(100), function(x) x + transitivity(vboot(fg4, v)))
+tboot_f1 <- mboot_f1 <- dboot_f1 <- kboot_f1 <- 
+  tboot_f2 <- mboot_f2 <- dboot_f2 <- kboot_f2 <- 
+  tboot_f3 <- mboot_f3 <- dboot_f3 <- kboot_f3 <-
+  tboot_f4 <- mboot_f4 <- dboot_f4 <- kboot_f4 <- c()
 
-mdboot_f1 <- sapply(numeric(100), function(x) x + mean(degree(vboot(fg1, v))))
-mdboot_f2 <- sapply(numeric(100), function(x) x + mean(degree(vboot(fg2, v))))
-mdboot_f3 <- sapply(numeric(100), function(x) x + mean(degree(vboot(fg3, v))))
-mdboot_f4 <- sapply(numeric(100), function(x) x + mean(degree(vboot(fg4, v))))
-
-dboot_f1 <- sapply(numeric(100), function(x) x + edge_density(vboot(fg1, v)))
-dboot_f2 <- sapply(numeric(100), function(x) x + edge_density(vboot(fg2, v)))
-dboot_f3 <- sapply(numeric(100), function(x) x + edge_density(vboot(fg3, v)))
-dboot_f4 <- sapply(numeric(100), function(x) x + edge_density(vboot(fg4, v)))
-
-kboot_f1 <- sapply(numeric(100), function(x) x + sum(coreness(vboot(fg1, v)) > 1))
-kboot_f2 <- sapply(numeric(100), function(x) x + sum(coreness(vboot(fg2, v)) > 1))
-kboot_f3 <- sapply(numeric(100), function(x) x + sum(coreness(vboot(fg3, v)) > 1))
-kboot_f4 <- sapply(numeric(100), function(x) x + sum(coreness(vboot(fg4, v)) > 1))
+for(i in 1:1000) {
+  b1 <- vboot(fg1, v)
+  b2 <- vboot(fg2, v)
+  b3 <- vboot(fg3, v)
+  b4 <- vboot(fg4, v)
+  
+  tboot_f1 <- c(tboot_f1, transitivity(b1))
+  mboot_f1 <- c(mboot_f1, mean(degree(b1)))
+  dboot_f1 <- c(dboot_f1, edge_density(b1))
+  kboot_f1 <- c(kboot_f1, sum(coreness(b1) > 1))
+  
+  tboot_f2 <- c(tboot_f2, transitivity(b2))
+  mboot_f2 <- c(mboot_f2, mean(degree(b2)))
+  dboot_f2 <- c(dboot_f2, edge_density(b2))
+  kboot_f2 <- c(kboot_f2, sum(coreness(b2) > 1))
+  
+  tboot_f3 <- c(tboot_f3, transitivity(b3))
+  mboot_f3 <- c(mboot_f3, mean(degree(b3)))
+  dboot_f3 <- c(dboot_f3, edge_density(b3))
+  kboot_f3 <- c(kboot_f3, sum(coreness(b3) > 1))
+  
+  tboot_f4 <- c(tboot_f4, transitivity(b4))
+  mboot_f4 <- c(mboot_f4, mean(degree(b4)))
+  dboot_f4 <- c(dboot_f4, edge_density(b4))
+  kboot_f4 <- c(kboot_f4, sum(coreness(b4) > 1))
+}
 
 # ================================================================================
 
@@ -102,40 +114,51 @@ tg99 <- induced_subgraph(tg99, common_nodes, "auto")
 # density, and number of nodes in a k-core where k > 1.
 set.seed(346)
 
-tjack_tg97 <- jackknife(tg97, "transitivity")
-tjack_tg98 <- jackknife(tg98, "transitivity")
-tjack_tg99 <- jackknife(tg99, "transitivity")
+tjack_t97 <- jackknife(tg97, "transitivity")
+tjack_t98 <- jackknife(tg98, "transitivity")
+tjack_t99 <- jackknife(tg99, "transitivity")
 
-mdjack_tg97 <- jackknife(tg97, "meandegree")
-mdjack_tg98 <- jackknife(tg98, "meandegree")
-mdjack_tg99 <- jackknife(tg99, "meandegree")
+mjack_t97 <- jackknife(tg97, "meandegree")
+mjack_t98 <- jackknife(tg98, "meandegree")
+mjack_t99 <- jackknife(tg99, "meandegree")
 
-djack_tg97 <- jackknife(tg97, "density")
-djack_tg98 <- jackknife(tg98, "density")
-djack_tg99 <- jackknife(tg99, "density")
+djack_t97 <- jackknife(tg97, "density")
+djack_t98 <- jackknife(tg98, "density")
+djack_t99 <- jackknife(tg99, "density")
 
-kjack_tg97 <- jackknife(tg97, "corenessnum")
-kjack_tg98 <- jackknife(tg98, "corenessnum")
-kjack_tg99 <- jackknife(tg99, "corenessnum")
+kjack_t97 <- jackknife(tg97, "corenessnum")
+kjack_t98 <- jackknife(tg98, "corenessnum")
+kjack_t99 <- jackknife(tg99, "corenessnum")
 
 # Create bootstrap distributions of transitivity, mean degree, 
 # density, and number of nodes in a k-core where k > 1.
 set.seed(346)
 
 v <- vertices(sample(V(tg97), gorder(tg97), replace=TRUE))
+tboot_t97 <- tboot_t98 <- tboot_t99 <-
+  mboot_t97 <- mboot_t98 <- mboot_t99 <-
+  dboot_t97 <- dboot_t98 <- dboot_t99 <-
+  kboot_t97 <- kboot_t98 <- kboot_t99 <- c()
 
-tboot_tg97 <- sapply(numeric(100), function(x) x + transitivity(vboot(tg97, v)))
-tboot_tg98 <- sapply(numeric(100), function(x) x + transitivity(vboot(tg98, v)))
-tboot_tg99 <- sapply(numeric(100), function(x) x + transitivity(vboot(tg99, v)))
+for(i in 1:1000) {
+  b1 <- vboot(tg97, v)
+  b2 <- vboot(tg98, v)
+  b3 <- vboot(tg99, v)
+  
+  tboot_t97 <- c(tboot_t97, transitivity(b1))
+  mboot_t97 <- c(mboot_t97, mean(degree(b1)))
+  dboot_t97 <- c(dboot_t97, edge_density(b1))
+  kboot_t97 <- c(kboot_t97, sum(coreness(b1) > 1))
+  
+  tboot_t98 <- c(tboot_t98, transitivity(b2))
+  mboot_t98 <- c(mboot_t98, mean(degree(b2)))
+  dboot_t98 <- c(dboot_t98, edge_density(b2))
+  kboot_t98 <- c(kboot_t98, sum(coreness(b2) > 1))
+  
+  tboot_t99 <- c(tboot_t99, transitivity(b3))
+  mboot_t99 <- c(mboot_t99, mean(degree(b3)))
+  dboot_t99 <- c(dboot_t99, edge_density(b3))
+  kboot_t99 <- c(kboot_t99, sum(coreness(b3) > 1))
+}
 
-mdboot_tg97 <- sapply(numeric(100), function(x) x + mean(degree(vboot(tg97, v))))
-mdboot_tg98 <- sapply(numeric(100), function(x) x + mean(degree(vboot(tg98, v))))
-mdboot_tg99 <- sapply(numeric(100), function(x) x + mean(degree(vboot(tg99, v))))
-
-dboot_tg97 <- sapply(numeric(100), function(x) x + edge_density(vboot(tg97, v)))
-dboot_tg98 <- sapply(numeric(100), function(x) x + edge_density(vboot(tg98, v)))
-dboot_tg99 <- sapply(numeric(100), function(x) x + edge_density(vboot(tg99, v)))
-
-kboot_tg97 <- sapply(numeric(100), function(x) x + sum(coreness(vboot(tg97, v)) > 1))
-kboot_tg98 <- sapply(numeric(100), function(x) x + sum(coreness(vboot(tg98, v)) > 1))
-kboot_tg99 <- sapply(numeric(100), function(x) x + sum(coreness(vboot(tg99, v)) > 1))
+save.image(file = "env.RData")

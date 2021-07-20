@@ -1,0 +1,219 @@
+---
+title: "Table comparing the middle 95% of the bootstrap and jackknife distributions displaying the difference in network statistics over time"
+author: "Alan Sun"
+date: "7/19/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+load("env.RData")
+```
+
+# Friendship Network
+
+## Transitivity
+```{r echo=FALSE}
+tbd21 <- tboot_f2 - tboot_f1
+tbd32 <- tboot_f3 - tboot_f2
+tbd43 <- tboot_f4 - tboot_f3
+tbd31 <- tboot_f3 - tboot_f1
+tbd42 <- tboot_f4 - tboot_f2
+tbd41 <- tboot_f4 - tboot_f1
+
+tjd21 <- tjack_f2 - tjack_f1
+tjd32 <- tjack_f3 - tjack_f2
+tjd43 <- tjack_f4 - tjack_f3
+tjd31 <- tjack_f3 - tjack_f1
+tjd42 <- tjack_f4 - tjack_f2
+tjd41 <- tjack_f4 - tjack_f1
+
+ft <- matrix(NA, nrow = 6, ncol = 4)
+rownames(ft) <- c('Time 2 - Time 1', 'Time 3 - Time 2', 'Time 4 - Time 3', 'Time 3 - Time 1', 'Time 4 - Time 2', 'Time 4 - Time 1')
+colnames(ft) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+
+ft[1,] <- c(quantile(tbd21, c(.025, .975)), quantile(tjd21, c(.025, .975)))
+ft[2,] <- c(quantile(tbd32, c(.025, .975)), quantile(tjd32, c(.025, .975)))
+ft[3,] <- c(quantile(tbd43, c(.025, .975)), quantile(tjd43, c(.025, .975)))
+ft[4,] <- c(quantile(tbd31, c(.025, .975)), quantile(tjd31, c(.025, .975)))
+ft[5,] <- c(quantile(tbd42, c(.025, .975)), quantile(tjd42, c(.025, .975)))
+ft[6,] <- c(quantile(tbd41, c(.025, .975)), quantile(tjd41, c(.025, .975)))
+
+as.table(ft)
+```
+
+## Mean Degree
+```{r echo=FALSE}
+mbd21 <- mboot_f2 - mboot_f1
+mbd32 <- mboot_f3 - mboot_f2
+mbd43 <- mboot_f4 - mboot_f3
+mbd31 <- mboot_f3 - mboot_f1
+mbd42 <- mboot_f4 - mboot_f2
+mbd41 <- mboot_f4 - mboot_f1
+
+mjd21 <- mjack_f2 - mjack_f1
+mjd32 <- mjack_f3 - mjack_f2
+mjd43 <- mjack_f4 - mjack_f3
+mjd31 <- mjack_f3 - mjack_f1
+mjd42 <- mjack_f4 - mjack_f2
+mjd41 <- mjack_f4 - mjack_f1
+
+fm <- matrix(NA, nrow = 6, ncol = 4)
+rownames(fm) <- c('Time 2 - Time 1', 'Time 3 - Time 2', 'Time 4 - Time 3', 'Time 3 - Time 1', 'Time 4 - Time 2', 'Time 4 - Time 1')
+colnames(fm) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+
+fm[1,] <- c(quantile(mbd21, c(.025, .975)), quantile(mjd21, c(.025, .975)))
+fm[2,] <- c(quantile(mbd32, c(.025, .975)), quantile(mjd32, c(.025, .975)))
+fm[3,] <- c(quantile(mbd43, c(.025, .975)), quantile(mjd43, c(.025, .975)))
+fm[4,] <- c(quantile(mbd31, c(.025, .975)), quantile(mjd31, c(.025, .975)))
+fm[5,] <- c(quantile(mbd42, c(.025, .975)), quantile(mjd42, c(.025, .975)))
+fm[6,] <- c(quantile(mbd41, c(.025, .975)), quantile(mjd41, c(.025, .975)))
+
+as.table(fm)
+```
+
+## Edge Density
+```{r echo=FALSE}
+dbd21 <- dboot_f2 - dboot_f1
+dbd32 <- dboot_f3 - dboot_f2
+dbd43 <- dboot_f4 - dboot_f3
+dbd31 <- dboot_f3 - dboot_f1
+dbd42 <- dboot_f4 - dboot_f2
+dbd41 <- dboot_f4 - dboot_f1
+
+djd21 <- djack_f2 - djack_f1
+djd32 <- djack_f3 - djack_f2
+djd43 <- djack_f4 - djack_f3
+djd31 <- djack_f3 - djack_f1
+djd42 <- djack_f4 - djack_f2
+djd41 <- djack_f4 - djack_f1
+
+fd <- matrix(NA, nrow = 6, ncol = 4)
+rownames(fd) <- c('Time 2 - Time 1', 'Time 3 - Time 2', 'Time 4 - Time 3', 'Time 3 - Time 1', 'Time 4 - Time 2', 'Time 4 - Time 1')
+colnames(fd) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+
+fd[1,] <- c(quantile(dbd21, c(.025, .975)), quantile(djd21, c(.025, .975)))
+fd[2,] <- c(quantile(dbd32, c(.025, .975)), quantile(djd32, c(.025, .975)))
+fd[3,] <- c(quantile(dbd43, c(.025, .975)), quantile(djd43, c(.025, .975)))
+fd[4,] <- c(quantile(dbd31, c(.025, .975)), quantile(djd31, c(.025, .975)))
+fd[5,] <- c(quantile(dbd42, c(.025, .975)), quantile(djd42, c(.025, .975)))
+fd[6,] <- c(quantile(dbd41, c(.025, .975)), quantile(djd41, c(.025, .975)))
+
+as.table(fd)
+```
+
+## Number of nodes in k-cores where k > 1
+```{r echo=FALSE}
+kbd21 <- kboot_f2 - kboot_f1
+kbd32 <- kboot_f3 - kboot_f2
+kbd43 <- kboot_f4 - kboot_f3
+kbd31 <- kboot_f3 - kboot_f1
+kbd42 <- kboot_f4 - kboot_f2
+kbd41 <- kboot_f4 - kboot_f1
+
+kjd21 <- kjack_f2 - kjack_f1
+kjd32 <- kjack_f3 - kjack_f2
+kjd43 <- kjack_f4 - kjack_f3
+kjd31 <- kjack_f3 - kjack_f1
+kjd42 <- kjack_f4 - kjack_f2
+kjd41 <- kjack_f4 - kjack_f1
+
+fk <- matrix(NA, nrow = 6, ncol = 4)
+rownames(fk) <- c('Time 2 - Time 1', 'Time 3 - Time 2', 'Time 4 - Time 3', 'Time 3 - Time 1', 'Time 4 - Time 2', 'Time 4 - Time 1')
+colnames(fk) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+
+fk[1,] <- c(quantile(kbd21, c(.025, .975)), quantile(kjd21, c(.025, .975)))
+fk[2,] <- c(quantile(kbd32, c(.025, .975)), quantile(kjd32, c(.025, .975)))
+fk[3,] <- c(quantile(kbd43, c(.025, .975)), quantile(kjd43, c(.025, .975)))
+fk[4,] <- c(quantile(kbd31, c(.025, .975)), quantile(kjd31, c(.025, .975)))
+fk[5,] <- c(quantile(kbd42, c(.025, .975)), quantile(kjd42, c(.025, .975)))
+fk[6,] <- c(quantile(kbd41, c(.025, .975)), quantile(kjd41, c(.025, .975)))
+
+as.table(fk)
+```
+
+# Tortoise Network
+
+## Transitivity
+```{r echo=FALSE}
+tbd1 <- tboot_t98 - tboot_t97
+tbd2 <- tboot_t99 - tboot_t98
+tbd3 <- tboot_t99 - tboot_t97
+
+tjd1 <- tjack_t98 - tjack_t97
+tjd2 <- tjack_t99 - tjack_t98
+tjd3 <- tjack_t99 - tjack_t97
+
+tt <- matrix(NA, nrow = 3, ncol = 4)
+rownames(tt) <- c('1998 - 1997', '1999 - 1998', '1999 - 1997')
+colnames(tt) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+
+tt[1,] <- c(quantile(tbd1, c(.025, .975)), quantile(tjd1, c(.025, .975)))
+tt[2,] <- c(quantile(tbd2, c(.025, .975)), quantile(tjd2, c(.025, .975)))
+tt[3,] <- c(quantile(tbd3, c(.025, .975)), quantile(tjd3, c(.025, .975)))
+
+as.table(tt)
+```
+
+## Mean Degree
+```{r echo=FALSE}
+mbd1 <- mboot_t98 - mboot_t97
+mbd2 <- mboot_t99 - mboot_t98
+mbd3 <- mboot_t99 - mboot_t97
+
+mjd1 <- mjack_t98 - mjack_t97
+mjd2 <- mjack_t99 - mjack_t98
+mjd3 <- mjack_t99 - mjack_t97
+
+tm <- matrix(NA, nrow = 3, ncol = 4)
+rownames(tm) <- c('1998 - 1997', '1999 - 1998', '1999 - 1997')
+colnames(tm) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+
+tm[1,] <- c(quantile(mbd1, c(.025, .975)), quantile(mjd1, c(.025, .975)))
+tm[2,] <- c(quantile(mbd2, c(.025, .975)), quantile(mjd2, c(.025, .975)))
+tm[3,] <- c(quantile(mbd3, c(.025, .975)), quantile(mjd3, c(.025, .975)))
+
+as.table(tm)
+```
+
+## Edge Density
+```{r echo=FALSE}
+dbd1 <- dboot_t98 - dboot_t97
+dbd2 <- dboot_t99 - dboot_t98
+dbd3 <- dboot_t99 - dboot_t97
+
+djd1 <- djack_t98 - djack_t97
+djd2 <- djack_t99 - djack_t98
+djd3 <- djack_t99 - djack_t97
+
+td <- matrix(NA, nrow = 3, ncol = 4)
+rownames(td) <- c('1998 - 1997', '1999 - 1998', '1999 - 1997')
+colnames(td) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+
+td[1,] <- c(quantile(dbd1, c(.025, .975)), quantile(djd1, c(.025, .975)))
+td[2,] <- c(quantile(dbd2, c(.025, .975)), quantile(djd2, c(.025, .975)))
+td[3,] <- c(quantile(dbd3, c(.025, .975)), quantile(djd3, c(.025, .975)))
+
+as.table(td)
+```
+
+## Number of nodes in k-cores where k > 1
+```{r echo=FALSE}
+kbd1 <- kboot_t98 - kboot_t97
+kbd2 <- kboot_t99 - kboot_t98
+kbd3 <- kboot_t99 - kboot_t97
+
+kjd1 <- kjack_t98 - kjack_t97
+kjd2 <- kjack_t99 - kjack_t98
+kjd3 <- kjack_t99 - kjack_t97
+
+tk <- matrix(NA, nrow = 3, ncol = 4)
+rownames(tk) <- c('1998 - 1997', '1999 - 1998', '1999 - 1997')
+colnames(tk) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+
+tk[1,] <- c(quantile(kbd1, c(.025, .975)), quantile(kjd1, c(.025, .975)))
+tk[2,] <- c(quantile(kbd2, c(.025, .975)), quantile(kjd2, c(.025, .975)))
+tk[3,] <- c(quantile(kbd3, c(.025, .975)), quantile(kjd3, c(.025, .975)))
+
+as.table(tk)
+```
