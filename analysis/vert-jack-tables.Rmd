@@ -28,16 +28,23 @@ tjd31 <- tjack_f3 - tjack_f1
 tjd42 <- tjack_f4 - tjack_f2
 tjd41 <- tjack_f4 - tjack_f1
 
-ft <- matrix(NA, nrow = 6, ncol = 4)
-rownames(ft) <- c('Time 2 - Time 1', 'Time 3 - Time 2', 'Time 4 - Time 3', 'Time 3 - Time 1', 'Time 4 - Time 2', 'Time 4 - Time 1')
-colnames(ft) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+tdd21 <- tdeg_f2 - tdeg_f1
+tdd32 <- tdeg_f3 - tdeg_f2
+tdd43 <- tdeg_f4 - tdeg_f3
+tdd31 <- tdeg_f3 - tdeg_f1
+tdd42 <- tdeg_f4 - tdeg_f2
+tdd41 <- tdeg_f4 - tdeg_f1
 
-ft[1,] <- c(quantile(tbd21, c(.025, .975)), quantile(tjd21, c(.025, .975)))
-ft[2,] <- c(quantile(tbd32, c(.025, .975)), quantile(tjd32, c(.025, .975)))
-ft[3,] <- c(quantile(tbd43, c(.025, .975)), quantile(tjd43, c(.025, .975)))
-ft[4,] <- c(quantile(tbd31, c(.025, .975)), quantile(tjd31, c(.025, .975)))
-ft[5,] <- c(quantile(tbd42, c(.025, .975)), quantile(tjd42, c(.025, .975)))
-ft[6,] <- c(quantile(tbd41, c(.025, .975)), quantile(tjd41, c(.025, .975)))
+ft <- matrix(NA, nrow = 6, ncol = 6)
+rownames(ft) <- c('T2 - T1', 'T3 - T2', 'T4 - T3', 'T3 - T1', 'T4 - T2', 'T4 - T1')
+colnames(ft) <- c('Boot 2.5%', 'Boot 97.5%', 'Jack 2.5%', 'Jack 97.5%', 'Degseq 2.5%', 'Degseq 97.5%')
+
+ft[1,] <- c(quantile(tbd21, c(.025, .975)), quantile(tjd21, c(.025, .975)), quantile(tdd21, c(.025, .975)))
+ft[2,] <- c(quantile(tbd32, c(.025, .975)), quantile(tjd32, c(.025, .975)), quantile(tdd32, c(.025, .975)))
+ft[3,] <- c(quantile(tbd43, c(.025, .975)), quantile(tjd43, c(.025, .975)), quantile(tdd43, c(.025, .975)))
+ft[4,] <- c(quantile(tbd31, c(.025, .975)), quantile(tjd31, c(.025, .975)), quantile(tdd31, c(.025, .975)))
+ft[5,] <- c(quantile(tbd42, c(.025, .975)), quantile(tjd42, c(.025, .975)), quantile(tdd42, c(.025, .975)))
+ft[6,] <- c(quantile(tbd41, c(.025, .975)), quantile(tjd41, c(.025, .975)), quantile(tdd41, c(.025, .975)))
 
 as.table(ft)
 ```
@@ -58,16 +65,23 @@ mjd31 <- mjack_f3 - mjack_f1
 mjd42 <- mjack_f4 - mjack_f2
 mjd41 <- mjack_f4 - mjack_f1
 
-fm <- matrix(NA, nrow = 6, ncol = 4)
-rownames(fm) <- c('Time 2 - Time 1', 'Time 3 - Time 2', 'Time 4 - Time 3', 'Time 3 - Time 1', 'Time 4 - Time 2', 'Time 4 - Time 1')
-colnames(fm) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+mdd21 <- mdeg_f2 - mdeg_f1
+mdd32 <- mdeg_f3 - mdeg_f2
+mdd43 <- mdeg_f4 - mdeg_f3
+mdd31 <- mdeg_f3 - mdeg_f1
+mdd42 <- mdeg_f4 - mdeg_f2
+mdd41 <- mdeg_f4 - mdeg_f1
 
-fm[1,] <- c(quantile(mbd21, c(.025, .975)), quantile(mjd21, c(.025, .975)))
-fm[2,] <- c(quantile(mbd32, c(.025, .975)), quantile(mjd32, c(.025, .975)))
-fm[3,] <- c(quantile(mbd43, c(.025, .975)), quantile(mjd43, c(.025, .975)))
-fm[4,] <- c(quantile(mbd31, c(.025, .975)), quantile(mjd31, c(.025, .975)))
-fm[5,] <- c(quantile(mbd42, c(.025, .975)), quantile(mjd42, c(.025, .975)))
-fm[6,] <- c(quantile(mbd41, c(.025, .975)), quantile(mjd41, c(.025, .975)))
+fm <- matrix(NA, nrow = 6, ncol = 6)
+rownames(fm) <- c('T2 - T1', 'T3 - T2', 'T4 - T3', 'T3 - T1', 'T4 - T2', 'T4 - T1')
+colnames(fm) <- c('Boot 2.5%', 'Boot 97.5%', 'Jack 2.5%', 'Jack 97.5%', 'Degseq 2.5%', 'Degseq 97.5%')
+
+fm[1,] <- c(quantile(mbd21, c(.025, .975)), quantile(mjd21, c(.025, .975)), quantile(mdd21, c(.025, .975)))
+fm[2,] <- c(quantile(mbd32, c(.025, .975)), quantile(mjd32, c(.025, .975)), quantile(mdd32, c(.025, .975)))
+fm[3,] <- c(quantile(mbd43, c(.025, .975)), quantile(mjd43, c(.025, .975)), quantile(mdd43, c(.025, .975)))
+fm[4,] <- c(quantile(mbd31, c(.025, .975)), quantile(mjd31, c(.025, .975)), quantile(mdd31, c(.025, .975)))
+fm[5,] <- c(quantile(mbd42, c(.025, .975)), quantile(mjd42, c(.025, .975)), quantile(mdd42, c(.025, .975)))
+fm[6,] <- c(quantile(mbd41, c(.025, .975)), quantile(mjd41, c(.025, .975)), quantile(mdd41, c(.025, .975)))
 
 as.table(fm)
 ```
@@ -88,16 +102,23 @@ djd31 <- djack_f3 - djack_f1
 djd42 <- djack_f4 - djack_f2
 djd41 <- djack_f4 - djack_f1
 
-fd <- matrix(NA, nrow = 6, ncol = 4)
-rownames(fd) <- c('Time 2 - Time 1', 'Time 3 - Time 2', 'Time 4 - Time 3', 'Time 3 - Time 1', 'Time 4 - Time 2', 'Time 4 - Time 1')
-colnames(fd) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+ddd21 <- ddeg_f2 - ddeg_f1
+ddd32 <- ddeg_f3 - ddeg_f2
+ddd43 <- ddeg_f4 - ddeg_f3
+ddd31 <- ddeg_f3 - ddeg_f1
+ddd42 <- ddeg_f4 - ddeg_f2
+ddd41 <- ddeg_f4 - ddeg_f1
 
-fd[1,] <- c(quantile(dbd21, c(.025, .975)), quantile(djd21, c(.025, .975)))
-fd[2,] <- c(quantile(dbd32, c(.025, .975)), quantile(djd32, c(.025, .975)))
-fd[3,] <- c(quantile(dbd43, c(.025, .975)), quantile(djd43, c(.025, .975)))
-fd[4,] <- c(quantile(dbd31, c(.025, .975)), quantile(djd31, c(.025, .975)))
-fd[5,] <- c(quantile(dbd42, c(.025, .975)), quantile(djd42, c(.025, .975)))
-fd[6,] <- c(quantile(dbd41, c(.025, .975)), quantile(djd41, c(.025, .975)))
+fd <- matrix(NA, nrow = 6, ncol = 6)
+rownames(fd) <- c('T2 - T1', 'T3 - T2', 'T4 - T3', 'T3 - T1', 'T4 - T2', 'T4 - T1')
+colnames(fd) <- c('Boot 2.5%', 'Boot 97.5%', 'Jack 2.5%', 'Jack 97.5%', 'Degseq 2.5%', 'Degseq 97.5%')
+
+fd[1,] <- c(quantile(dbd21, c(.025, .975)), quantile(djd21, c(.025, .975)), quantile(ddd21, c(.025, .975)))
+fd[2,] <- c(quantile(dbd32, c(.025, .975)), quantile(djd32, c(.025, .975)), quantile(ddd32, c(.025, .975)))
+fd[3,] <- c(quantile(dbd43, c(.025, .975)), quantile(djd43, c(.025, .975)), quantile(ddd43, c(.025, .975)))
+fd[4,] <- c(quantile(dbd31, c(.025, .975)), quantile(djd31, c(.025, .975)), quantile(ddd31, c(.025, .975)))
+fd[5,] <- c(quantile(dbd42, c(.025, .975)), quantile(djd42, c(.025, .975)), quantile(ddd42, c(.025, .975)))
+fd[6,] <- c(quantile(dbd41, c(.025, .975)), quantile(djd41, c(.025, .975)), quantile(ddd41, c(.025, .975)))
 
 as.table(fd)
 ```
@@ -118,16 +139,23 @@ kjd31 <- kjack_f3 - kjack_f1
 kjd42 <- kjack_f4 - kjack_f2
 kjd41 <- kjack_f4 - kjack_f1
 
-fk <- matrix(NA, nrow = 6, ncol = 4)
-rownames(fk) <- c('Time 2 - Time 1', 'Time 3 - Time 2', 'Time 4 - Time 3', 'Time 3 - Time 1', 'Time 4 - Time 2', 'Time 4 - Time 1')
-colnames(fk) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+kdd21 <- kdeg_f2 - kdeg_f1
+kdd32 <- kdeg_f3 - kdeg_f2
+kdd43 <- kdeg_f4 - kdeg_f3
+kdd31 <- kdeg_f3 - kdeg_f1
+kdd42 <- kdeg_f4 - kdeg_f2
+kdd41 <- kdeg_f4 - kdeg_f1
 
-fk[1,] <- c(quantile(kbd21, c(.025, .975)), quantile(kjd21, c(.025, .975)))
-fk[2,] <- c(quantile(kbd32, c(.025, .975)), quantile(kjd32, c(.025, .975)))
-fk[3,] <- c(quantile(kbd43, c(.025, .975)), quantile(kjd43, c(.025, .975)))
-fk[4,] <- c(quantile(kbd31, c(.025, .975)), quantile(kjd31, c(.025, .975)))
-fk[5,] <- c(quantile(kbd42, c(.025, .975)), quantile(kjd42, c(.025, .975)))
-fk[6,] <- c(quantile(kbd41, c(.025, .975)), quantile(kjd41, c(.025, .975)))
+fk <- matrix(NA, nrow = 6, ncol = 6)
+rownames(fk) <- c('T2 - T1', 'T3 - T2', 'T4 - T3', 'T3 - T1', 'T4 - T2', 'T4 - T1')
+colnames(fk) <- c('Boot 2.5%', 'Boot 97.5%', 'Jack 2.5%', 'Jack 97.5%', 'Degseq 2.5%', 'Degseq 97.5%')
+
+fk[1,] <- c(quantile(kbd21, c(.025, .975)), quantile(kjd21, c(.025, .975)), quantile(kdd21, c(.025, .975)))
+fk[2,] <- c(quantile(kbd32, c(.025, .975)), quantile(kjd32, c(.025, .975)), quantile(kdd32, c(.025, .975)))
+fk[3,] <- c(quantile(kbd43, c(.025, .975)), quantile(kjd43, c(.025, .975)), quantile(kdd43, c(.025, .975)))
+fk[4,] <- c(quantile(kbd31, c(.025, .975)), quantile(kjd31, c(.025, .975)), quantile(kdd31, c(.025, .975)))
+fk[5,] <- c(quantile(kbd42, c(.025, .975)), quantile(kjd42, c(.025, .975)), quantile(kdd42, c(.025, .975)))
+fk[6,] <- c(quantile(kbd41, c(.025, .975)), quantile(kjd41, c(.025, .975)), quantile(kdd41, c(.025, .975)))
 
 as.table(fk)
 ```
@@ -144,13 +172,17 @@ tjd1 <- tjack_t98 - tjack_t97
 tjd2 <- tjack_t99 - tjack_t98
 tjd3 <- tjack_t99 - tjack_t97
 
-tt <- matrix(NA, nrow = 3, ncol = 4)
-rownames(tt) <- c('1998 - 1997', '1999 - 1998', '1999 - 1997')
-colnames(tt) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+tdd1 <- tdeg_tg98 - tdeg_tg97
+tdd2 <- tdeg_tg99 - tdeg_tg98
+tdd3 <- tdeg_tg99 - tdeg_tg97
 
-tt[1,] <- c(quantile(tbd1, c(.025, .975)), quantile(tjd1, c(.025, .975)))
-tt[2,] <- c(quantile(tbd2, c(.025, .975)), quantile(tjd2, c(.025, .975)))
-tt[3,] <- c(quantile(tbd3, c(.025, .975)), quantile(tjd3, c(.025, .975)))
+tt <- matrix(NA, nrow = 3, ncol = 6)
+rownames(tt) <- c('\'98 - \'97', '\'99 - \'98', '\'99 - \'97')
+colnames(tt) <- c('Boot 2.5%', 'Boot 97.5%', 'Jack 2.5%', 'Jack 97.5%', 'Degseq 2.5%', 'Degseq 97.5%')
+
+tt[1,] <- c(quantile(tbd1, c(.025, .975)), quantile(tjd1, c(.025, .975)), quantile(tdd1, c(.025, .975)))
+tt[2,] <- c(quantile(tbd2, c(.025, .975)), quantile(tjd2, c(.025, .975)), quantile(tdd2, c(.025, .975)))
+tt[3,] <- c(quantile(tbd3, c(.025, .975)), quantile(tjd3, c(.025, .975)), quantile(tdd3, c(.025, .975)))
 
 as.table(tt)
 ```
@@ -165,13 +197,17 @@ mjd1 <- mjack_t98 - mjack_t97
 mjd2 <- mjack_t99 - mjack_t98
 mjd3 <- mjack_t99 - mjack_t97
 
-tm <- matrix(NA, nrow = 3, ncol = 4)
-rownames(tm) <- c('1998 - 1997', '1999 - 1998', '1999 - 1997')
-colnames(tm) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+mdd1 <- mdeg_tg98 - mdeg_tg97
+mdd2 <- mdeg_tg99 - mdeg_tg98
+mdd3 <- mdeg_tg99 - mdeg_tg97
 
-tm[1,] <- c(quantile(mbd1, c(.025, .975)), quantile(mjd1, c(.025, .975)))
-tm[2,] <- c(quantile(mbd2, c(.025, .975)), quantile(mjd2, c(.025, .975)))
-tm[3,] <- c(quantile(mbd3, c(.025, .975)), quantile(mjd3, c(.025, .975)))
+tm <- matrix(NA, nrow = 3, ncol = 6)
+rownames(tm) <- c('\'98 - \'97', '\'99 - \'98', '\'99 - \'97')
+colnames(tm) <- c('Boot 2.5%', 'Boot 97.5%', 'Jack 2.5%', 'Jack 97.5%', 'Degseq 2.5%', 'Degseq 97.5%')
+
+tm[1,] <- c(quantile(mbd1, c(.025, .975)), quantile(mjd1, c(.025, .975)), quantile(mdd1, c(.025, .975)))
+tm[2,] <- c(quantile(mbd2, c(.025, .975)), quantile(mjd2, c(.025, .975)), quantile(mdd2, c(.025, .975)))
+tm[3,] <- c(quantile(mbd3, c(.025, .975)), quantile(mjd3, c(.025, .975)), quantile(mdd3, c(.025, .975)))
 
 as.table(tm)
 ```
@@ -186,13 +222,17 @@ djd1 <- djack_t98 - djack_t97
 djd2 <- djack_t99 - djack_t98
 djd3 <- djack_t99 - djack_t97
 
-td <- matrix(NA, nrow = 3, ncol = 4)
-rownames(td) <- c('1998 - 1997', '1999 - 1998', '1999 - 1997')
-colnames(td) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+ddd1 <- ddeg_tg98 - ddeg_tg97
+ddd2 <- ddeg_tg99 - ddeg_tg98
+ddd3 <- ddeg_tg99 - ddeg_tg97
 
-td[1,] <- c(quantile(dbd1, c(.025, .975)), quantile(djd1, c(.025, .975)))
-td[2,] <- c(quantile(dbd2, c(.025, .975)), quantile(djd2, c(.025, .975)))
-td[3,] <- c(quantile(dbd3, c(.025, .975)), quantile(djd3, c(.025, .975)))
+td <- matrix(NA, nrow = 3, ncol = 6)
+rownames(td) <- c('\'98 - \'97', '\'99 - \'98', '\'99 - \'97')
+colnames(td) <- c('Boot 2.5%', 'Boot 97.5%', 'Jack 2.5%', 'Jack 97.5%', 'Degseq 2.5%', 'Degseq 97.5%')
+
+td[1,] <- c(quantile(dbd1, c(.025, .975)), quantile(djd1, c(.025, .975)), quantile(ddd1, c(.025, .975)))
+td[2,] <- c(quantile(dbd2, c(.025, .975)), quantile(djd2, c(.025, .975)), quantile(ddd2, c(.025, .975)))
+td[3,] <- c(quantile(dbd3, c(.025, .975)), quantile(djd3, c(.025, .975)), quantile(ddd3, c(.025, .975)))
 
 as.table(td)
 ```
@@ -207,13 +247,17 @@ kjd1 <- kjack_t98 - kjack_t97
 kjd2 <- kjack_t99 - kjack_t98
 kjd3 <- kjack_t99 - kjack_t97
 
-tk <- matrix(NA, nrow = 3, ncol = 4)
-rownames(tk) <- c('1998 - 1997', '1999 - 1998', '1999 - 1997')
-colnames(tk) <- c('Boot diff 2.5%', 'Boot diff 97.5%', 'Jack diff 2.5%', 'Jack diff 97.5%')
+kdd1 <- kdeg_tg98 - kdeg_tg97
+kdd2 <- kdeg_tg99 - kdeg_tg98
+kdd3 <- kdeg_tg99 - kdeg_tg97
 
-tk[1,] <- c(quantile(kbd1, c(.025, .975)), quantile(kjd1, c(.025, .975)))
-tk[2,] <- c(quantile(kbd2, c(.025, .975)), quantile(kjd2, c(.025, .975)))
-tk[3,] <- c(quantile(kbd3, c(.025, .975)), quantile(kjd3, c(.025, .975)))
+tk <- matrix(NA, nrow = 3, ncol = 6)
+rownames(tk) <- c('\'98 - \'97', '\'99 - \'98', '\'99 - \'97')
+colnames(tk) <- c('Boot 2.5%', 'Boot 97.5%', 'Jack 2.5%', 'Jack 97.5%', 'Degseq 2.5%', 'Degseq 97.5%')
+
+tk[1,] <- c(quantile(kbd1, c(.025, .975)), quantile(kjd1, c(.025, .975)), quantile(kdd1, c(.025, .975)))
+tk[2,] <- c(quantile(kbd2, c(.025, .975)), quantile(kjd2, c(.025, .975)), quantile(kdd2, c(.025, .975)))
+tk[3,] <- c(quantile(kbd3, c(.025, .975)), quantile(kjd3, c(.025, .975)), quantile(kdd3, c(.025, .975)))
 
 as.table(tk)
 ```

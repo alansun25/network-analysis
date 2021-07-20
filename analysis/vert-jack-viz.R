@@ -161,4 +161,65 @@ for(i in 1:1000) {
   kboot_t99 <- c(kboot_t99, sum(coreness(b3) > 1))
 }
 
+# Simulating the network by sampling the degree sequence
+
+## Friendship network
+tdeg_f1 <- mdeg_f1 <- ddeg_f1 <- kdeg_f1 <- 
+  tdeg_f2 <- mdeg_f2 <- ddeg_f2 <- kdeg_f2 <- 
+  tdeg_f3 <- mdeg_f3 <- ddeg_f3 <- kdeg_f3 <-
+  tdeg_f4 <- mdeg_f4 <- ddeg_f4 <- kdeg_f4 <- c()
+
+for(i in 1:1000) {
+  b1 <- sample_degseq(degree(fg1), method = "simple.no.multiple")
+  b2 <- sample_degseq(degree(fg2), method = "simple.no.multiple")
+  b3 <- sample_degseq(degree(fg3), method = "simple.no.multiple")
+  b4 <- sample_degseq(degree(fg4), method = "simple.no.multiple")
+  
+  tdeg_f1 <- c(tdeg_f1, transitivity(b1))
+  mdeg_f1 <- c(mdeg_f1, mean(degree(b1)))
+  ddeg_f1 <- c(ddeg_f1, edge_density(b1))
+  kdeg_f1 <- c(kdeg_f1, sum(coreness(b1) > 1))
+  
+  tdeg_f2 <- c(tdeg_f2, transitivity(b2))
+  mdeg_f2 <- c(mdeg_f2, mean(degree(b2)))
+  ddeg_f2 <- c(ddeg_f2, edge_density(b2))
+  kdeg_f2 <- c(kdeg_f2, sum(coreness(b2) > 1))
+  
+  tdeg_f3 <- c(tdeg_f3, transitivity(b3))
+  mdeg_f3 <- c(mdeg_f3, mean(degree(b3)))
+  ddeg_f3 <- c(ddeg_f3, edge_density(b3))
+  kdeg_f3 <- c(kdeg_f3, sum(coreness(b3) > 1))
+  
+  tdeg_f4 <- c(tdeg_f4, transitivity(b4))
+  mdeg_f4 <- c(mdeg_f4, mean(degree(b4)))
+  ddeg_f4 <- c(ddeg_f4, edge_density(b4))
+  kdeg_f4 <- c(kdeg_f4, sum(coreness(b4) > 1))
+}
+
+## Tortoise network
+tdeg_tg97 <- mdeg_tg97 <- ddeg_tg97 <- kdeg_tg97 <- 
+  tdeg_tg98 <- mdeg_tg98 <- ddeg_tg98 <- kdeg_tg98 <- 
+  tdeg_tg99 <- mdeg_tg99 <- ddeg_tg99 <- kdeg_tg99 <- c()
+
+for(i in 1:1000) {
+  b1 <- sample_degseq(degree(tg97), method = "simple.no.multiple")
+  b2 <- sample_degseq(degree(tg98), method = "simple.no.multiple")
+  b3 <- sample_degseq(degree(tg99), method = "simple.no.multiple")
+  
+  tdeg_tg97 <- c(tdeg_tg97, transitivity(b1))
+  mdeg_tg97 <- c(mdeg_tg97, mean(degree(b1)))
+  ddeg_tg97 <- c(ddeg_tg97, edge_density(b1))
+  kdeg_tg97 <- c(kdeg_tg97, sum(coreness(b1) > 1))
+  
+  tdeg_tg98 <- c(tdeg_tg98, transitivity(b2))
+  mdeg_tg98 <- c(mdeg_tg98, mean(degree(b2)))
+  ddeg_tg98 <- c(ddeg_tg98, edge_density(b2))
+  kdeg_tg98 <- c(kdeg_tg98, sum(coreness(b2) > 1))
+  
+  tdeg_tg99 <- c(tdeg_tg99, transitivity(b3))
+  mdeg_tg99 <- c(mdeg_tg99, mean(degree(b3)))
+  ddeg_tg99 <- c(ddeg_tg99, edge_density(b3))
+  kdeg_tg99 <- c(kdeg_tg99, sum(coreness(b3) > 1))
+}
+
 save.image(file = "env.RData")
