@@ -222,16 +222,6 @@ ptd2 <- paste("DSE:", "[", paste(tCIdseq2[1], tCIdseq2[2], sep=", "), "]")
 ptd3 <- paste("DSE:", "[", paste(tCIdseq3[1], tCIdseq3[2], sep=", "), "]")
 ptd4 <- paste("DSE:", "[", paste(tCIdseq4[1], tCIdseq4[2], sep=", "), "]")
 
-pmd1 <- paste("DSE:", "[", paste(mCIdseq1[1], mCIdseq1[2], sep=", "), "]")
-pmd2 <- paste("DSE:", "[", paste(mCIdseq2[1], mCIdseq2[2], sep=", "), "]")
-pmd3 <- paste("DSE:", "[", paste(mCIdseq3[1], mCIdseq3[2], sep=", "), "]")
-pmd4 <- paste("DSE:", "[", paste(mCIdseq4[1], mCIdseq4[2], sep=", "), "]")
-
-pdd1 <- paste("DSE:", "[", paste(dCIdseq1[1], dCIdseq1[2], sep=", "), "]")
-pdd2 <- paste("DSE:", "[", paste(dCIdseq2[1], dCIdseq2[2], sep=", "), "]")
-pdd3 <- paste("DSE:", "[", paste(dCIdseq3[1], dCIdseq3[2], sep=", "), "]")
-pdd4 <- paste("DSE:", "[", paste(dCIdseq4[1], dCIdseq4[2], sep=", "), "]")
-
 pkd1 <- paste("DSE:", "[", paste(kCIdseq1[1], kCIdseq1[2], sep=", "), "]")
 pkd2 <- paste("DSE:", "[", paste(kCIdseq2[1], kCIdseq2[2], sep=", "), "]")
 pkd3 <- paste("DSE:", "[", paste(kCIdseq3[1], kCIdseq3[2], sep=", "), "]")
@@ -380,3 +370,199 @@ Coreness, k > 1 & \makecell[l]{`r round(kf1, 3)` \\ `r pkd1`} & \makecell[l]{`r 
 ```
 
 # Tortoise Network
+```{r echo=FALSE}
+tbd9897 <- tboot_t98 - tboot_t97
+tbd9998 <- tboot_t99 - tboot_t98
+tbd9997 <- tboot_t99 - tboot_t97
+
+tjd9897 <- tjack_t98 - tjack_t97
+tjd9998 <- tjack_t99 - tjack_t98
+tjd9997 <- tjack_t99 - tjack_t97
+
+CItbd9897 <- round(quantile(tbd9897, c(.025, .975)), 3)
+CItjd9897 <- round(quantile(tjd9897, c(.025, .975)), 3)
+CItbd9998 <- round(quantile(tbd9998, c(.025, .975)), 3)
+CItjd9998 <- round(quantile(tjd9998, c(.025, .975)), 3)
+CItbd9997 <- round(quantile(tbd9997, c(.025, .975)), 3)
+CItjd9997 <- round(quantile(tjd9997, c(.025, .975)), 3)
+
+mbd9897 <- mboot_t98 - mboot_t97
+mbd9998 <- mboot_t99 - mboot_t98
+mbd9997 <- mboot_t99 - mboot_t97
+
+mjd9897 <- mjack_t98 - mjack_t97
+mjd9998 <- mjack_t99 - mjack_t98
+mjd9997 <- mjack_t99 - mjack_t97
+
+CImbd9897 <- round(quantile(mbd9897, c(.025, .975)), 3)
+CImjd9897 <- round(quantile(mjd9897, c(.025, .975)), 3)
+CImbd9998 <- round(quantile(mbd9998, c(.025, .975)), 3)
+CImjd9998 <- round(quantile(mjd9998, c(.025, .975)), 3)
+CImbd9997 <- round(quantile(mbd9997, c(.025, .975)), 3)
+CImjd9997 <- round(quantile(mjd9997, c(.025, .975)), 3)
+
+dbd9897 <- dboot_t98 - dboot_t97
+dbd9998 <- dboot_t99 - dboot_t98
+dbd9997 <- dboot_t99 - dboot_t97
+
+djd9897 <- djack_t98 - djack_t97
+djd9998 <- djack_t99 - djack_t98
+djd9997 <- djack_t99 - djack_t97
+
+CIdbd9897 <- round(quantile(dbd9897, c(.025, .975)), 3)
+CIdjd9897 <- round(quantile(djd9897, c(.025, .975)), 3)
+CIdbd9998 <- round(quantile(dbd9998, c(.025, .975)), 3)
+CIdjd9998 <- round(quantile(djd9998, c(.025, .975)), 3)
+CIdbd9997 <- round(quantile(dbd9997, c(.025, .975)), 3)
+CIdjd9997 <- round(quantile(djd9997, c(.025, .975)), 3)
+
+kbd9897 <- kboot_t98 - kboot_t97
+kbd9998 <- kboot_t99 - kboot_t98
+kbd9997 <- kboot_t99 - kboot_t97
+
+kjd9897 <- kjack_t98 - kjack_t97
+kjd9998 <- kjack_t99 - kjack_t98
+kjd9997 <- kjack_t99 - kjack_t97
+
+CIkbd9897 <- round(quantile(kbd9897, c(.025, .975)), 3)
+CIkjd9897 <- round(quantile(kjd9897, c(.025, .975)), 3)
+CIkbd9998 <- round(quantile(kbd9998, c(.025, .975)), 3)
+CIkjd9998 <- round(quantile(kjd9998, c(.025, .975)), 3)
+CIkbd9997 <- round(quantile(kbd9997, c(.025, .975)), 3)
+CIkjd9997 <- round(quantile(kjd9997, c(.025, .975)), 3)
+
+tt97 <- transitivity(tg97)
+tt98 <- transitivity(tg98)
+tt99 <- transitivity(tg99)
+
+mt97 <- mean(degree(tg97))
+mt98 <- mean(degree(tg98))
+mt99 <- mean(degree(tg99))
+
+dt97 <- edge_density(tg97)
+dt98 <- edge_density(tg98)
+dt99 <- edge_density(tg99)
+
+kt97 <- sum(coreness(tg97) > 1)
+kt98 <- sum(coreness(tg98) > 1)
+kt99 <- sum(coreness(tg99) > 1)
+
+ptb9897 <- paste("boot:", "[", paste(CItbd9897[1], CItbd9897[2], sep=", "), "]")
+ptj9897 <- paste("jack:", "[", paste(CItjd9897[1], CItjd9897[2], sep=", "), "]")
+pmb9897 <- paste("boot:", "[", paste(CImbd9897[1], CImbd9897[2], sep=", "), "]")
+pmj9897 <- paste("jack:", "[", paste(CImjd9897[1], CImjd9897[2], sep=", "), "]")
+pdb9897 <- paste("boot:", "[", paste(CIdbd9897[1], CIdbd9897[2], sep=", "), "]")
+pdj9897 <- paste("jack:", "[", paste(CIdjd9897[1], CIdjd9897[2], sep=", "), "]")
+pkb9897 <- paste("boot:", "[", paste(CIkbd9897[1], CIkbd9897[2], sep=", "), "]")
+pkj9897 <- paste("jack:", "[", paste(CIkjd9897[1], CIkjd9897[2], sep=", "), "]")
+
+ptb9998 <- paste("boot:", "[", paste(CItbd9998[1], CItbd9998[2], sep=", "), "]")
+ptj9998 <- paste("jack:", "[", paste(CItjd9998[1], CItjd9998[2], sep=", "), "]")
+pmb9998 <- paste("boot:", "[", paste(CImbd9998[1], CImbd9998[2], sep=", "), "]")
+pmj9998 <- paste("jack:", "[", paste(CImjd9998[1], CImjd9998[2], sep=", "), "]")
+pdb9998 <- paste("boot:", "[", paste(CIdbd9998[1], CIdbd9998[2], sep=", "), "]")
+pdj9998 <- paste("jack:", "[", paste(CIdjd9998[1], CIdjd9998[2], sep=", "), "]")
+pkb9998 <- paste("boot:", "[", paste(CIkbd9998[1], CIkbd9998[2], sep=", "), "]")
+pkj9998 <- paste("jack:", "[", paste(CIkjd9998[1], CIkjd9998[2], sep=", "), "]")
+
+ptb9997 <- paste("boot:", "[", paste(CItbd9997[1], CItbd9997[2], sep=", "), "]")
+ptj9997 <- paste("jack:", "[", paste(CItjd9997[1], CItjd9997[2], sep=", "), "]")
+pmb9997 <- paste("boot:", "[", paste(CImbd9997[1], CImbd9997[2], sep=", "), "]")
+pmj9997 <- paste("jack:", "[", paste(CImjd9997[1], CImjd9997[2], sep=", "), "]")
+pdb9997 <- paste("boot:", "[", paste(CIdbd9997[1], CIdbd9997[2], sep=", "), "]")
+pdj9997 <- paste("jack:", "[", paste(CIdjd9997[1], CIdjd9997[2], sep=", "), "]")
+pkb9997 <- paste("boot:", "[", paste(CIkbd9997[1], CIkbd9997[2], sep=", "), "]")
+pkj9997 <- paste("jack:", "[", paste(CIkjd9997[1], CIkjd9997[2], sep=", "), "]")
+
+tCIdseq1 <- round(quantile(tdeg_tg97, c(.025, .975)), 3)
+tCIdseq2 <- round(quantile(tdeg_tg98, c(.025, .975)), 3)
+tCIdseq3 <- round(quantile(tdeg_tg99, c(.025, .975)), 3)
+
+mCIdseq1 <- round(quantile(mdeg_tg97, c(.025, .975)), 3)
+mCIdseq2 <- round(quantile(mdeg_tg98, c(.025, .975)), 3)
+mCIdseq3 <- round(quantile(mdeg_tg99, c(.025, .975)), 3)
+
+dCIdseq1 <- round(quantile(ddeg_tg97, c(.025, .975)), 3)
+dCIdseq2 <- round(quantile(ddeg_tg98, c(.025, .975)), 3)
+dCIdseq3 <- round(quantile(ddeg_tg99, c(.025, .975)), 3)
+
+kCIdseq1 <- round(quantile(kdeg_tg97, c(.025, .975)), 3)
+kCIdseq2 <- round(quantile(kdeg_tg98, c(.025, .975)), 3)
+kCIdseq3 <- round(quantile(kdeg_tg99, c(.025, .975)), 3)
+
+ptd1 <- paste("DSE:", "[", paste(tCIdseq1[1], tCIdseq1[2], sep=", "), "]")
+ptd2 <- paste("DSE:", "[", paste(tCIdseq2[1], tCIdseq2[2], sep=", "), "]")
+ptd3 <- paste("DSE:", "[", paste(tCIdseq3[1], tCIdseq3[2], sep=", "), "]")
+
+pkd1 <- paste("DSE:", "[", paste(kCIdseq1[1], kCIdseq1[2], sep=", "), "]")
+pkd2 <- paste("DSE:", "[", paste(kCIdseq2[1], kCIdseq2[2], sep=", "), "]")
+pkd3 <- paste("DSE:", "[", paste(kCIdseq3[1], kCIdseq3[2], sep=", "), "]")
+```
+
+```{=latex}
+\begin{center}
+1997 and 1998
+\end{center}
+
+\begin{center}
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Statistic} & \textbf{1997} & \textbf{1998} & \textbf{1998 - 1997} & \textbf{95\% difference interval} \\
+\hline
+Transitivity & \makecell[l]{`r round(tt97, 3)` \\ `r ptd1`} & \makecell[l]{`r round(tt98, 3)` \\ `r ptd2`} & `r round(tt98-tt97, 3)` & \makecell[l]{`r ptb9897` \\ `r ptj9897`} \\
+\hline
+Mean Degree & `r round(mt97, 3)` & `r round(mt98, 3)` & `r round(mt98-mt97, 3)` & \makecell[l]{`r pmb9897` \\ `r pmj9897`} \\
+\hline
+Edge Density & `r round(dt97, 3)` & `r round(dt98, 3)` & `r round(dt98-dt97, 3)` & \makecell[l]{`r pdb9897` \\ `r pdj9897`} \\
+\hline
+Coreness, k > 1 & \makecell[l]{`r round(kt97, 3)` \\ `r pkd1`} & \makecell[l]{`r round(kt98, 3)` \\ `r pkd2`} & `r round(kt98-kt97, 3)` & \makecell[l]{`r pkb9897` \\ `r pkj9897`} \\
+\hline
+\end{tabular}
+\end{table}
+\end{center}
+
+\begin{center}
+1998 and 1999
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Statistic} & \textbf{1998} & \textbf{1999} & \textbf{1999 - 1998} & \textbf{95\% difference interval} \\
+\hline
+Transitivity & \makecell[l]{`r round(tt98, 3)` \\ `r ptd2`} & \makecell[l]{`r round(tt99, 3)` \\ `r ptd3`} & `r round(tt99-tt98, 3)` & \makecell[l]{`r ptb9998` \\ `r ptj9998`} \\
+\hline
+Mean Degree & `r round(mt98, 3)` & `r round(mt99, 3)` & `r round(mt99-mt98, 3)` & \makecell[l]{`r pmb9998` \\ `r pmj9998`} \\
+\hline
+Edge Density & `r round(dt98, 3)` & `r round(dt99, 3)` & `r round(dt99-dt98, 3)` & \makecell[l]{`r pdb9998` \\ `r pdj9998`} \\
+\hline
+Coreness, k > 1 & \makecell[l]{`r round(kt98, 3)` \\ `r pkd2`} & \makecell[l]{`r round(kt99, 3)` \\ `r pkd3`} & `r round(kt99-kt98, 3)` & \makecell[l]{`r pkb9998` \\ `r pkj9998`} \\
+\hline
+\end{tabular}
+\end{center}
+
+\bigskip
+
+\bigskip
+
+\begin{center}
+1997 and 1999
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Statistic} & \textbf{1997} & \textbf{1999} & \textbf{1999 - 1997} & \textbf{95\% difference interval} \\
+\hline
+Transitivity & \makecell[l]{`r round(tt97, 3)` \\ `r ptd1`} & \makecell[l]{`r round(tt99, 3)` \\ `r ptd3`} & `r round(tt99-tt97, 3)` & \makecell[l]{`r ptb9997` \\ `r ptj9997`} \\
+\hline
+Mean Degree & `r round(mt97, 3)` & `r round(mt99, 3)` & `r round(mt99-mt97, 3)` & \makecell[l]{`r pmb9997` \\ `r pmj9997`} \\
+\hline
+Edge Density & `r round(dt97, 3)` & `r round(dt99, 3)` & `r round(dt99-dt97, 3)` & \makecell[l]{`r pdb9997` \\ `r pdj9997`} \\
+\hline
+Coreness, k > 1 & \makecell[l]{`r round(kt97, 3)` \\ `r pkd1`} & \makecell[l]{`r round(kt99, 3)` \\ `r pkd3`} & `r round(kt99-kt97, 3)` & \makecell[l]{`r pkb9997` \\ `r pkj9997`} \\
+\hline
+\end{tabular}
+\end{center}
+```
