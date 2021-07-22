@@ -1,2 +1,2 @@
 # network-analysis
-Playing around with network simulation in R.
+Studying various network simulation methods using R (Summer 2021).
